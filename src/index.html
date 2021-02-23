@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    body {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+    }
+    .game {
+      display: inline-flex;
+      position: absolute;
+      border-style: solid;
+
+      border-color: black;
+      border-radius: 5px;
+      height: 80%;
+      width: 80%;
+      margin: 0, auto;
+      top: 10%;
+      left: 10%;
+    }
+
+    .mineMap {
+      height: 500px;
+      width: 500px;
+      position: absolute;
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+      top: 18%;
+      left: 15%;
+      border-style: solid;
+      border-color: rgb(255, 0, 0);
+      border-radius: 5px;
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-right: 10px;
+      margin-left: 10px;
+      background-color: rgb(62, 71, 80);
+    }
+    .navBar {
+      height: 80%;
+      width: 20%;
+
+      position: absolute;
+      border-style: solid;
+      border-color: rgb(4, 0, 255);
+      border-radius: 5px;
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-right: 10px;
+      margin-left: 10px;
+      top: 10%;
+      right: 20px;
+    }
+
+    .btnstart {
+      height: 140px;
+      width: 140px;
+      display: block;
+      justify-content: center;
+      margin-left: auto;
+      margin-top: 20px;
+      margin-right: auto;
+      border-radius: 10px;
+    }
+    .GameElement {
+      display: flex;
+      background-color: rgb(60, 123, 206);
+      border: 1px solid black;
+      border-radius: 5px;
+      color: rgb(0, 0, 0);
+      margin: auto;
+      align-items: center;
+      justify-content: center;
+
+      width: 95%;
+      height: 95%;
+    }
+    .numberOne {
+      background-color: rgb(200, 200, 200);
+      background-image:url(./img/1.png);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .numberTwo {
+      background-color: rgb(200, 200, 200);
+      background-image:url(./img/2.png);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;;
+    }
+    .numberTree {
+      background-color: rgb(200, 200, 200);
+      background-image:url(./img/3.png);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;;
+    }
+    .numberFour {
+      background-color: rgb(200, 200, 200);
+      background-image:url(./img/4.png);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;;
+    }
+    .numberFive {
+      background-color: rgb(200, 200, 200);
+      background-image:url(./img/5.png);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;;
+    }
+    .numberSix {
+      background-color: rgb(200, 200, 200);
+      background-image:url(./img/6.png);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;;
+    }
+    .numberSeven {
+      background-color: rgb(200, 200, 200);
+      background-image:url(./img/7.png);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;;
+    }
+    .numberEight {
+      background-color: rgb(200, 200, 200);
+      background-image:url(./img/8.png);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;;
+    }
+    .numberZero {
+      background-color: rgb(200, 200, 200);
+    }
+    .mine{
+      background-color: rgb(200, 200, 200);
+      background-image:url(./img/explosion.png);
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;;
+    }
+
+  </style>
+  <body>
+    <div class="game">
+      <div class="mineMap" id="mineMap">mineMap</div>
+      <div class="navBar">
+        <button class="btnstart" id="btnstartgame">Start</button>
+      </div>
+    </div>
+    <div src="C:\Users\Kostya\Desktop\mine-minesweeper.jpg"></div>
+    <script src="index.js"></script>
+  </body>
+</html>
