@@ -1,4 +1,3 @@
-
 const coordinateSurroundingElements = [
   { x: -1, y: 0 },
   { x: -1, y: -1 },

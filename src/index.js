@@ -1,13 +1,20 @@
 import { ConstructorGameObject } from "./constructorGameObject.js";
 import { elementClick } from "./elementClick.js";
+import {Game} from "./game.js"
 
 const btnStart = document.getElementById("btnstartgame");
 btnStart.addEventListener("click", init);
 
 function init() {
   console.log("Booom");
+const game=new Game({ row: 9, column: 9 }, 10)
+game.start()
+ /* const game = new ConstructorGameObject({ row: 9, column: 9 }, 10);/// переименовать Game, { row: 9, column: 9, quantityMine:10}
 
-  const game = new ConstructorGameObject({ row: 9, column: 9 }, 10);
+
+  //init() new game: game.start;
+
+
   console.log(game.quantityMine);
   game.createArrayGameMapElement(game.gameSize);
   console.log(game.arrayGameMapElement);
@@ -27,7 +34,7 @@ function init() {
   function anotherClick(eventArg) {
     let IdElement = eventArg.target.id;
     elementClick(IdElement, game);
-  }
+  }*/
 }
 function firstClick(IdElement, game) {
   console.log("first click");

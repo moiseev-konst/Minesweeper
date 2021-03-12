@@ -11,7 +11,7 @@ export function ConstructorGameObject(gameSize, quantityMine) {
   this.countFlag = 0;
   this.countMine = 0;
 
-  this.createArrayGameMapElement = (gameSize) => {
+  this.createArrayGameMapElement = (gameSize) => {//за
     this.arrayGameMapElement = createGameMap(gameSize);
   };
 
@@ -32,4 +32,5 @@ export function ConstructorGameObject(gameSize, quantityMine) {
       column: Number.parseInt(/\d+$/.exec(id).join("")),
     };
   };
+  this.createArrayGameMapElement(this.gameSize)
 }
