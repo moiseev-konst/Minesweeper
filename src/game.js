@@ -20,6 +20,7 @@ export class Game {
       { x: 0, y: 1 },
       { x: -1, y: 1 },
     ];
+    this.findZeroElements = [];
   }
 
   createGameMap() {
@@ -59,10 +60,16 @@ export class Game {
       this.writeMine(this.firstClick, this.quantityMine);
       this.writeNumberToMap(this.gameMap, this.gameMine);
 
-      this.addClassCss(
-        this.collectionDivMap[this.firstClick],
-        this.gameMap[this.firstClick]
-      );
+      if (this.firstClick >= 0) {
+        let numberInElement = this.gameMap[this.firstClick];
+        if (numberInElement == 0) {
+          this.openSurroundingZero(this.firstClick).forEach((index) => {
+            this.addClassCss(this.collectionDivMap[index], this.gameMap[index]);
+          });
+          this.findZeroElements = [];
+        }
+        this.addClassCss(this.collectionDivMap[this.firstClick], numberInElement);
+      }
     } else {
       let indexDivClick = this.collectionDivMap.indexOf(eventArg.target);
       if (indexDivClick >= 0) {
@@ -71,6 +78,7 @@ export class Game {
           this.openSurroundingZero(indexDivClick).forEach((index) => {
             this.addClassCss(this.collectionDivMap[index], this.gameMap[index]);
           });
+          this.findZeroElements = [];
         }
         this.addClassCss(this.collectionDivMap[indexDivClick], numberInElement);
       }
@@ -135,25 +143,16 @@ export class Game {
     });
     return findIndex;
   }
+  
   openSurroundingZero(index) {
-    let findZeroElements = [];
-    findindex(index,this.findSurroundElements);
-    
-    function findindex(index, qwe) {
-   
-      let find= qwe(index)
-      find.forEach((el) => {
-        if (findZeroElements.indexOf(el) < 0) {
-          findZeroElements.push(el);
-          if (this.gameMap[el] == 0) {
-            findindex(el);
-          } else {
-            findZeroElements.push(el);
-          }
+    this.findSurroundElements(index).forEach((el) => {
+      if (this.findZeroElements.indexOf(el) < 0) {
+        this.findZeroElements.push(el);
+        if (this.gameMap[el] == 0) {
+          this.openSurroundingZero(el);
         }
-      });
-    }
-
-    return findZeroElements;
+      }
+    });
+    return this.findZeroElements
   }
 }
