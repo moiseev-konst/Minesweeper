@@ -5,7 +5,7 @@ export class Game {
     this.quantityMine = quantityMine;
     this.gameMap = [];
     this.collectionDivMap = [];
-    this.firstClick;
+    this.firstClick = undefined;
     this.gameMine = [];
     this.countFlag = 0;
     this.countMine = 0;
@@ -48,40 +48,77 @@ export class Game {
     this.gameMapHTML.addEventListener("click", (eventArg) => {
       this.eventClick(eventArg);
     });
+    this.gameMapHTML.oncontextmenu = (eventArg) => {
+      this.eventClick(eventArg);
+      return false;
+    };
   }
 
   eventClick(eventArg) {
-    if (this.firstClick == undefined) {
-      console.log(eventArg);
-      console.log(this.collectionDivMap);
+    console.log(eventArg.button,eventArg.buttons);
+    if (eventArg.which == 1) {
+      if (this.firstClick == undefined) {
+        console.log(eventArg);
+        console.log(this.collectionDivMap);
 
-      this.firstClick = this.collectionDivMap.indexOf(eventArg.target);
+        this.firstClick = this.collectionDivMap.indexOf(eventArg.target);
 
-      this.writeMine(this.firstClick, this.quantityMine);
-      this.writeNumberToMap(this.gameMap, this.gameMine);
+        this.writeMine(this.firstClick, this.quantityMine);
+        this.writeNumberToMap(this.gameMap, this.gameMine);
 
-      if (this.firstClick >= 0) {
-        let numberInElement = this.gameMap[this.firstClick];
-        if (numberInElement == 0) {
-          this.openSurroundingZero(this.firstClick).forEach((index) => {
-            this.addClassCss(this.collectionDivMap[index], this.gameMap[index]);
-          });
-          this.findZeroElements = [];
+        if (this.firstClick >= 0) {
+          let numberInElement = this.gameMap[this.firstClick];
+          if (numberInElement == 0) {
+            this.openSurroundingZero(this.firstClick).forEach((index) => {
+              this.addClassCss(
+                this.collectionDivMap[index],
+                this.gameMap[index]
+              );
+            });
+            this.findZeroElements = [];
+          }
+          this.addClassCss(
+            this.collectionDivMap[this.firstClick],
+            numberInElement
+          );
         }
-        this.addClassCss(this.collectionDivMap[this.firstClick], numberInElement);
+      } else {
+        let indexDivClick = this.collectionDivMap.indexOf(eventArg.target);
+        if (indexDivClick >= 0) {
+          let numberInElement = this.gameMap[indexDivClick];
+          if (numberInElement < 0) {
+            this.openAllMine().forEach((index) => {
+              if (!this.collectionDivMap[index].classList.contains("flag")) {
+                this.addClassCss(
+                  this.collectionDivMap[index],
+                  this.gameMap[index]
+                );
+              }
+            });
+            this.collectionDivMap[indexDivClick].classList.add("mine");
+          }
+          if (numberInElement == 0) {
+            this.openSurroundingZero(indexDivClick).forEach((index) => {
+              this.addClassCss(
+                this.collectionDivMap[index],
+                this.gameMap[index]
+              );
+            });
+            this.findZeroElements = [];
+          } else {
+            this.addClassCss(
+              this.collectionDivMap[indexDivClick],
+              numberInElement
+            );
+          }
+        }
       }
-    } else {
+    } else if (eventArg.which == 3) {
       let indexDivClick = this.collectionDivMap.indexOf(eventArg.target);
-      if (indexDivClick >= 0) {
-        let numberInElement = this.gameMap[indexDivClick];
-        if (numberInElement == 0) {
-          this.openSurroundingZero(indexDivClick).forEach((index) => {
-            this.addClassCss(this.collectionDivMap[index], this.gameMap[index]);
-          });
-          this.findZeroElements = [];
-        }
-        this.addClassCss(this.collectionDivMap[indexDivClick], numberInElement);
-      }
+
+      this.collectionDivMap[indexDivClick].classList.contains("flag")
+        ? this.collectionDivMap[indexDivClick].classList.remove("flag")
+        : this.collectionDivMap[indexDivClick].classList.add("flag");
     }
   }
   addClassCss(div, numberInElement) {
@@ -143,7 +180,7 @@ export class Game {
     });
     return findIndex;
   }
-  
+
   openSurroundingZero(index) {
     this.findSurroundElements(index).forEach((el) => {
       if (this.findZeroElements.indexOf(el) < 0) {
@@ -153,6 +190,16 @@ export class Game {
         }
       }
     });
-    return this.findZeroElements
+    return this.findZeroElements;
+  }
+  openAllMine() {
+    let mine = [];
+    for (let i = 0; i < this.gameMap.length; i++) {
+      if (this.gameMap[i] < 0) {
+        mine.push(i);
+      }
+    }
+
+    return mine;
   }
 }
