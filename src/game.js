@@ -43,27 +43,26 @@ export class Game {
     });
     this.gameMapHTML.append(fragment);
   }
+
+  mouseDown = (eventArg) => {
+    console.log("mousedown");
+    this.button = eventArg.buttons;
+  };
+
+  mouseUp = (eventArg) => {
+    this.gameClickController(eventArg, this.button);
+  };
+
   start() {
     this.createGameMap(this.mapLength);
-    //console.log(this.collectionDivMap);
     this.gameMapHTML.addEventListener("contexmenu", (eventArg) => {
       eventArg.preventDefault();
     });
-
     document.oncontextmenu = (e) => {
       e.preventDefault();
     };
-
-    this.gameMapHTML.addEventListener("mousedown", (eventArg) => {
-      console.log("mousedown");
-      // console.log(eventArg.buttons);
-      this.button = eventArg.buttons;
-    });
-    this.gameMapHTML.addEventListener("mouseup", (eventArg) => {
-      //console.log("mouseup");
-
-      this.gameClickController(eventArg, this.button);
-    });
+    this.gameMapHTML.addEventListener("mousedown", this.mouseDown);
+    this.gameMapHTML.addEventListener("mouseup", this.mouseUp);
   }
   youWin() {
     if (
@@ -72,39 +71,20 @@ export class Game {
           this.collectionDivMap[mine].classList.contains("flag") &&
           this.countFlag == this.gameMine.length
         );
-        //console.log(this.collectionDivMap[mine].classList.contains("flag"))
       })
     ) {
       console.log("YOU WIN");
-      alert("YOU WIN")
-      this.gameMapHTML.removeEventListener("mousedown", (eventArg) => {
-        console.log("mousedown");
-        // console.log(eventArg.buttons);
-        this.button = eventArg.buttons;
-      });
-
-      this.gameMapHTML.removeEventListener("mouseup", (eventArg) => {
-        console.log("mouseup");
-
-        this.gameClickController(eventArg, this.button);
-      });
+      alert("YOU WIN");
+      this.gameMapHTML.removeEventListener("mousedown", this.mouseDown);
+      this.gameMapHTML.removeEventListener("mouseup", this.mouseUp);
     }
   }
 
   youLose() {
     console.log("You Lose");
-    alert("You Lose")
-    this.gameMapHTML.removeEventListener("mousedown", (eventArg) => {
-      console.log("mousedown");
-      // console.log(eventArg.buttons);
-      this.button = eventArg.buttons;
-    });
-
-    this.gameMapHTML.removeEventListener("mouseup", (eventArg) => {
-      console.log("mouseup");
-
-      this.gameClickController(eventArg, this.button);
-    });
+    alert("You Lose");
+    this.gameMapHTML.removeEventListener("mousedown", this.mouseDown);
+    this.gameMapHTML.removeEventListener("mouseup", this.mouseUp);
   }
   gameClickController(eventArg, button) {
     console.log(button);
