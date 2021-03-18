@@ -21,6 +21,7 @@ export class Game {
       { x: -1, y: 1 },
     ];
     this.findZeroElements = [];
+    this.button;
   }
 
   createGameMap() {
@@ -45,19 +46,34 @@ export class Game {
   start() {
     this.createGameMap(this.mapLength);
     //console.log(this.collectionDivMap);
-    this.gameMapHTML.addEventListener("click", (eventArg) => {
-      this.eventClick(eventArg);
+    this.gameMapHTML.addEventListener("contexmenu", (eventArg) => {
+      eventArg.preventDefault();
     });
-    this.gameMapHTML.oncontextmenu = (eventArg) => {
-      this.eventClick(eventArg);
-      return false;
+
+    document.oncontextmenu = (e) => {
+      e.preventDefault();
     };
+
+    this.gameMapHTML.addEventListener("mousedown", (eventArg) => {
+      console.log("mousedown");
+      // console.log(eventArg.buttons);
+      this.button = eventArg.buttons;
+    });
+    this.gameMapHTML.addEventListener("mouseup", (eventArg) => {
+      console.log("mouseup");
+
+      this.gameClickController(eventArg, this.button);
+    });
   }
-  gameClickController(eventArg) {
-    if (eventArg.buttons == 0) {
-      this.oneButtonCkick(eventArg);
-    } else if (eventArg.buttons == 3) {
-      this.twoButtonsClick(eventArg);
+
+  gameClickController(eventArg, button) {
+    console.log(button);
+    if (this.collectionDivMap.indexOf(eventArg.target) >= 0) {
+      if (button < 3) {
+        this.oneButtonCkick(eventArg);
+      } else if (button == 3) {
+        this.twoButtonsClick(eventArg);
+      }
     }
   }
   oneButtonCkick(eventArg) {
@@ -84,131 +100,97 @@ export class Game {
 
     this.writeMine(this.firstClick, this.quantityMine);
     this.writeNumberToMap(this.gameMap, this.gameMine);
-    openCellController(this.firstClick);
+    this.openCellController(this.firstClick);
   }
   leftClick(eventArg) {
+    // console.log("left", eventArg);
     let indexDivClick = this.collectionDivMap.indexOf(eventArg.target);
-    openCellController(indexDivClick);
+    // console.log("left", this.collectionDivMap.indexOf(eventArg.target));
+    this.openCellController(indexDivClick);
   }
-  rightButtonClick(eventArg) {}
-  twoButtonsClick(eventArg) {}
-
-  openCellController(index) {
-    if (this.gameMap[index] > 0) {
-      openCell(index, this.gameMap[index]);
-    } else if (this.gameMap[index] < 0) {
-      openCells(this.openAllMine(), "mine");
-    } else if (this.gameMap[index] == 0) {
-      openCells(this.openSurroundingZero(index));
+  rightButtonClick(eventArg) {
+    //console.log("right", eventArg);
+    let indexDivClick = this.collectionDivMap.indexOf(eventArg.target);
+    this.openCellController(indexDivClick, "flag");
+  }
+  twoButtonsClick(eventArg) {
+    let surround = [];
+    let surroundEl = [];
+    let flagMine = 0;
+    console.log("две кнопки");
+    let indexDivClick = this.collectionDivMap.indexOf(eventArg.target);
+    surround = this.findSurroundElements(indexDivClick);
+    for (let i = 0; i < surround.length; i++) {
+      if (this.collectionDivMap[surround[i]].classList.contains('flag')) {
+        flagMine += 1;
+      } else {
+        surroundEl.push(surround[i]);
+      }
+    }
+    if (this.gameMap[indexDivClick] == flagMine) {
+      surroundEl.forEach((index) => {
+        this.openCellController(index);
+      });
     }
   }
 
-  openCell(index, classCss=null) {
-   
+  openCellController(index, button) {
+    if (this.gameMap[index] > 0 || button) {
+      this.openCell(index, button == undefined ? this.gameMap[index] : button);
+    } else if (this.gameMap[index] < 0) {
+      this.openCell(index, "n9");
+      this.openCells(this.openAllMine(), "mine");
+    } else if (this.gameMap[index] == 0) {
+      this.openCells(this.openSurroundingZero(index));
+    }
+  }
+
+  openCell(index, classCss) {
     this.addClassCssController(this.collectionDivMap[index], classCss);
   }
-  openCells(arrayIndexes, classCss=null) {
-    arrayIndexes.forEach((index) => {
-      openCell(index, classCss);
-    });
+  openCells(arrayIndexes, classCss) {
+    if (classCss == undefined) {
+      arrayIndexes.forEach((index) => {
+        this.openCell(index, this.gameMap[index]);
+      });
+    } else {
+      arrayIndexes.forEach((index) => {
+        this.openCell(index, classCss);
+      });
+    }
   }
   addClassCssController(refDiv, props) {
     if (Number.isInteger(props)) {
-      let classCss = `n${props < 0 ? 9 : props}`;
-      addClassCss(refDiv, classCss);
-    } else {
-      addClassCss(refDiv, props);
+      let classCss = `n${props}`;
+      this.addClassCss(refDiv, classCss);
+    } else if (
+      props == "flag" &&
+      !refDiv.classList.contains("n0") &&
+      !refDiv.classList.contains("n1") &&
+      !refDiv.classList.contains("n2") &&
+      !refDiv.classList.contains("n3") &&
+      !refDiv.classList.contains("n4") &&
+      !refDiv.classList.contains("n5") &&
+      !refDiv.classList.contains("n6") &&
+      !refDiv.classList.contains("n7") &&
+      !refDiv.classList.contains("n8") &&
+      !refDiv.classList.contains("n9") &&
+      !refDiv.classList.contains("mine")
+    ) {
+      refDiv.classList.contains(props)
+        ? refDiv.classList.remove(props)
+        : this.addClassCss(refDiv, props);
+    } else if (
+      props == "mine" &&
+      !refDiv.classList.contains("flag") &&
+      !refDiv.classList.contains("n9")
+    ) {
+      this.addClassCss(refDiv, props);
+    } else if (props == "n9") {
+      this.addClassCss(refDiv, props);
     }
   }
 
-  /*
-  gameClickController(eventArg) {
-    if (eventArg.buttons == 0) {
-      if (eventArg.button == 1) {
-        if(this.firstClick == undefined){
-          this.leftFirstClick(eventArg);
-        }else{this.leftClick(eventArg);}
-        
-      } else if (eventArg.button == 2) {
-        this.rightClick(eventArg);
-      }
-    }else if(eventArg.buttons == 3){
-      leftAndRightClick(eventArg)
-    }
-  }
-  leftClick(eventArg) {}
-  rightClick(eventArg) {}
-  leftFirstClick(eventArg){}
-  leftAndRightClick(eventArg){}
-*/
-
-  eventClick(eventArg) {
-    console.log(eventArg.button, eventArg.buttons);
-    if (eventArg.which == 1) {
-      if (this.firstClick == undefined) {
-        console.log(eventArg);
-        console.log(this.collectionDivMap);
-
-        this.firstClick = this.collectionDivMap.indexOf(eventArg.target);
-
-        this.writeMine(this.firstClick, this.quantityMine);
-        this.writeNumberToMap(this.gameMap, this.gameMine);
-
-        if (this.firstClick >= 0) {
-          let numberInElement = this.gameMap[this.firstClick];
-          if (numberInElement == 0) {
-            this.openSurroundingZero(this.firstClick).forEach((index) => {
-              this.addClassCss(
-                this.collectionDivMap[index],
-                this.gameMap[index]
-              );
-            });
-            this.findZeroElements = [];
-          }
-          this.addClassCss(
-            this.collectionDivMap[this.firstClick],
-            numberInElement
-          );
-        }
-      } else {
-        let indexDivClick = this.collectionDivMap.indexOf(eventArg.target);
-        if (indexDivClick >= 0) {
-          let numberInElement = this.gameMap[indexDivClick];
-          if (numberInElement < 0) {
-            this.openAllMine().forEach((index) => {
-              if (!this.collectionDivMap[index].classList.contains("flag")) {
-                this.addClassCss(
-                  this.collectionDivMap[index],
-                  this.gameMap[index]
-                );
-              }
-            });
-            this.collectionDivMap[indexDivClick].classList.add("mine");
-          }
-          if (numberInElement == 0) {
-            this.openSurroundingZero(indexDivClick).forEach((index) => {
-              this.addClassCss(
-                this.collectionDivMap[index],
-                this.gameMap[index]
-              );
-            });
-            this.findZeroElements = [];
-          } else {
-            this.addClassCss(
-              this.collectionDivMap[indexDivClick],
-              numberInElement
-            );
-          }
-        }
-      }
-    } else if (eventArg.which == 3) {
-      let indexDivClick = this.collectionDivMap.indexOf(eventArg.target);
-
-      this.collectionDivMap[indexDivClick].classList.contains("flag")
-        ? this.collectionDivMap[indexDivClick].classList.remove("flag")
-        : this.collectionDivMap[indexDivClick].classList.add("flag");
-    }
-  }
   addClassCss(div, classCss) {
     div.classList.add(classCss);
   }
@@ -287,30 +269,6 @@ export class Game {
         mine.push(i);
       }
     }
-
     return mine;
   }
 }
-/*
-metod (){
-  if{
-    if{
-      if{
-        something_1()
-      } else something_2()
-    }else something_3()
-  }else something_4()
-}
-
-metod(){
-  if{
-    something_1()
-  }something_2()
-}
-something_1(){
-  if{
-    something_3()
-  }something_4()
-}
-  
-}*/
