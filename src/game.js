@@ -60,12 +60,52 @@ export class Game {
       this.button = eventArg.buttons;
     });
     this.gameMapHTML.addEventListener("mouseup", (eventArg) => {
+      //console.log("mouseup");
+
+      this.gameClickController(eventArg, this.button);
+    });
+  }
+  youWin() {
+    if (
+      this.gameMine.every((mine) => {
+        return (
+          this.collectionDivMap[mine].classList.contains("flag") &&
+          this.countFlag == this.gameMine.length
+        );
+        //console.log(this.collectionDivMap[mine].classList.contains("flag"))
+      })
+    ) {
+      console.log("YOU WIN");
+      alert("YOU WIN")
+      this.gameMapHTML.removeEventListener("mousedown", (eventArg) => {
+        console.log("mousedown");
+        // console.log(eventArg.buttons);
+        this.button = eventArg.buttons;
+      });
+
+      this.gameMapHTML.removeEventListener("mouseup", (eventArg) => {
+        console.log("mouseup");
+
+        this.gameClickController(eventArg, this.button);
+      });
+    }
+  }
+
+  youLose() {
+    console.log("You Lose");
+    alert("You Lose")
+    this.gameMapHTML.removeEventListener("mousedown", (eventArg) => {
+      console.log("mousedown");
+      // console.log(eventArg.buttons);
+      this.button = eventArg.buttons;
+    });
+
+    this.gameMapHTML.removeEventListener("mouseup", (eventArg) => {
       console.log("mouseup");
 
       this.gameClickController(eventArg, this.button);
     });
   }
-
   gameClickController(eventArg, button) {
     console.log(button);
     if (this.collectionDivMap.indexOf(eventArg.target) >= 0) {
@@ -120,13 +160,14 @@ export class Game {
     console.log("две кнопки");
     let indexDivClick = this.collectionDivMap.indexOf(eventArg.target);
     surround = this.findSurroundElements(indexDivClick);
-    for (let i = 0; i < surround.length; i++) {
-      if (this.collectionDivMap[surround[i]].classList.contains('flag')) {
+    surroundEl = surround.filter((el) => {
+      if (this.collectionDivMap[el].classList.contains("flag")) {
         flagMine += 1;
       } else {
-        surroundEl.push(surround[i]);
+        return el >= 0;
       }
-    }
+    });
+
     if (this.gameMap[indexDivClick] == flagMine) {
       surroundEl.forEach((index) => {
         this.openCellController(index);
@@ -140,6 +181,7 @@ export class Game {
     } else if (this.gameMap[index] < 0) {
       this.openCell(index, "n9");
       this.openCells(this.openAllMine(), "mine");
+      this.youLose();
     } else if (this.gameMap[index] == 0) {
       this.openCells(this.openSurroundingZero(index));
     }
@@ -177,9 +219,14 @@ export class Game {
       !refDiv.classList.contains("n9") &&
       !refDiv.classList.contains("mine")
     ) {
-      refDiv.classList.contains(props)
-        ? refDiv.classList.remove(props)
-        : this.addClassCss(refDiv, props);
+      if (refDiv.classList.contains(props)) {
+        refDiv.classList.remove(props);
+        this.countFlag -= 1;
+      } else {
+        this.addClassCss(refDiv, props);
+        this.countFlag += 1;
+        this.youWin();
+      }
     } else if (
       props == "mine" &&
       !refDiv.classList.contains("flag") &&
@@ -197,10 +244,7 @@ export class Game {
   writeMine(firstClick, quantityMine) {
     while (this.gameMine.length < quantityMine) {
       let randomMine = Number.parseInt(this.mapLength * Math.random() + 1);
-      if (
-        randomMine !== firstClick.index &&
-        this.gameMine.indexOf(randomMine) < 0
-      ) {
+      if (randomMine !== firstClick && this.gameMine.indexOf(randomMine) < 0) {
         this.gameMine.push(randomMine);
       }
     }
@@ -260,6 +304,7 @@ export class Game {
         }
       }
     });
+    this.findZeroElements.push(index);
     return this.findZeroElements;
   }
   openAllMine() {
