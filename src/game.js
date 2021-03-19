@@ -10,6 +10,7 @@ export class Game {
     this.countFlag = 0;
     this.countMine = 0;
     this.gameMapHTML = document.getElementById("mineMap");
+    this.watch = document.getElementById("stopWatch");
     this.coordinateSurroundingElements = [
       { x: -1, y: 0 },
       { x: -1, y: -1 },
@@ -22,6 +23,9 @@ export class Game {
     ];
     this.findZeroElements = [];
     this.button;
+    this.watchInterval;
+    this.watchText;
+    this.countSecond = 0;
   }
 
   createGameMap() {
@@ -64,6 +68,28 @@ export class Game {
     this.gameMapHTML.addEventListener("mousedown", this.mouseDown);
     this.gameMapHTML.addEventListener("mouseup", this.mouseUp);
   }
+
+  changeWatch() {
+    this.countSecond=this.countSecond+1;
+    let second = this.countSecond % 60;
+    let minutes = (this.countSecond / 60) % 60;
+    this.watchText = `${Math.trunc(minutes)}:${Math.trunc(second)}`;
+    this.watch.innerText = this.watchText;
+    console.log(this.watchText)
+    if (minutes == 99) {
+      stopWatch();
+    }
+  }
+  startWatch() {
+    console.log(this.watch)
+    console.log(this.watchText)
+    this.watch.innerText = "00:00";
+    this.watchInterval = setInterval(this.changeWatch.bind(this), 1000);
+  }
+  stopWatch() {
+    clearInterval(this.watchInterval);
+  }
+
   youWin() {
     if (
       this.gameMine.every((mine) => {
@@ -74,15 +100,29 @@ export class Game {
       })
     ) {
       console.log("YOU WIN");
+      this.openAllMap().forEach((el) => {
+        this.openCellController(el);
+      });
       alert("YOU WIN");
+      this.stopWatch();
       this.gameMapHTML.removeEventListener("mousedown", this.mouseDown);
       this.gameMapHTML.removeEventListener("mouseup", this.mouseUp);
     }
   }
-
+  openAllMap() {
+    let notOpenCells = this.collectionDivMap.filter((div) => {
+      return div.classList.length < 2;
+    });
+    let notOpenIndex = notOpenCells.map((el) => {
+      return this.collectionDivMap.indexOf(el);
+    });
+    return notOpenIndex;
+  }
   youLose() {
     console.log("You Lose");
+    this.stopWatch();
     alert("You Lose");
+
     this.gameMapHTML.removeEventListener("mousedown", this.mouseDown);
     this.gameMapHTML.removeEventListener("mouseup", this.mouseUp);
   }
@@ -121,6 +161,7 @@ export class Game {
     this.writeMine(this.firstClick, this.quantityMine);
     this.writeNumberToMap(this.gameMap, this.gameMine);
     this.openCellController(this.firstClick);
+    this.startWatch();
   }
   leftClick(eventArg) {
     // console.log("left", eventArg);
