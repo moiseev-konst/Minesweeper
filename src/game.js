@@ -65,26 +65,38 @@ export class Game {
     document.oncontextmenu = (e) => {
       e.preventDefault();
     };
+    this.watch.innerText = "00:00";
     this.gameMapHTML.addEventListener("mousedown", this.mouseDown);
     this.gameMapHTML.addEventListener("mouseup", this.mouseUp);
   }
 
-  changeWatch() {
-    this.countSecond=this.countSecond+1;
-    let second = this.countSecond % 60;
-    let minutes = (this.countSecond / 60) % 60;
-    this.watchText = `${Math.trunc(minutes)}:${Math.trunc(second)}`;
+  changeWatch=()=> {
+    this.watchText = "";
+    this.countSecond = this.countSecond + 1;
+    let second =
+      this.countSecond % 60 < 10
+        ? "0" + Math.trunc(this.countSecond % 60)
+        : Math.trunc(this.countSecond % 60).toString();
+    let minutes =
+      (this.countSecond / 60) % 60 < 10
+        ? "0" + Math.trunc((this.countSecond / 60) % 60)
+        : Math.trunc((this.countSecond / 60) % 60).toString();
+    //this.watchText=Math.trunc(minutes) < 10 ?`${Math.trunc(minutes)}`:`"0" + ${Math.trunc(minutes)}`
+
+    this.watchText = `${minutes}:${second}`;
+
+    console.log(this.watchText);
     this.watch.innerText = this.watchText;
-    console.log(this.watchText)
+    console.log(this.watchText);
     if (minutes == 99) {
       stopWatch();
     }
   }
   startWatch() {
-    console.log(this.watch)
-    console.log(this.watchText)
-    this.watch.innerText = "00:00";
-    this.watchInterval = setInterval(this.changeWatch.bind(this), 1000);
+    console.log(this.watch);
+    console.log(this.watchText);
+    
+    this.watchInterval = setInterval(this.changeWatch, 1000);
   }
   stopWatch() {
     clearInterval(this.watchInterval);
