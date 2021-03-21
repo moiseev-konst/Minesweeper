@@ -27,14 +27,16 @@
     }
 
     .mineMap {
-      height: 500px;
-      width: 500px;
-      position: absolute;
+      height: 600PX;
+      width: 600px;
+      position:relative;
+      
+      justify-content: center;
       display: grid;
-      grid-template-columns: repeat(9, 1fr);
-      grid-template-rows: repeat(9, 1fr);
-      top: 18%;
-      left: 15%;
+      grid-template-columns: repeat(16, 1fr);
+      grid-template-rows: repeat(16, 1fr);
+      
+      left: auto;
       border-style: solid;
       border-color: rgb(255, 0, 0);
       border-radius: 5px;
@@ -147,6 +149,21 @@
       text-align: center;
       padding-top: 25px;
     }
+    .countMine{
+      background-color: rgb(60, 123, 206);
+      border: 1px solid black;
+      border-radius: 5px;
+      height: 60px;
+      width: 140px;
+      display: block;
+      justify-content: center;
+      margin-left: auto;
+      margin-top: 20px;
+      margin-right: auto;
+      border-radius: 10px;
+      text-align: center;
+      padding-top: 25px;
+    }
   </style>
   <body>
     <div class="game">
@@ -154,6 +171,7 @@
       <div class="navBar">
         <button class="btnstart" id="btnstartgame">Start</button>
         <h1 class="stopWatch" id="stopWatch">00:00</h1>
+        <h1 class="countMine" id="countMine"></h1>
       </div>
     </div>
     <div src="C:\Users\Kostya\Desktop\mine-minesweeper.jpg"></div>

@@ -8,9 +8,11 @@ export class Game {
     this.firstClick = undefined;
     this.gameMine = [];
     this.countFlag = 0;
-    this.countMine = 0;
+    this.countMine = this.quantityMine;
     this.gameMapHTML = document.getElementById("mineMap");
     this.watch = document.getElementById("stopWatch");
+    this.mineCount = document.getElementById("countMine");
+    // this.btn = document.getElementById("btnstartgame")
     this.coordinateSurroundingElements = [
       { x: -1, y: 0 },
       { x: -1, y: -1 },
@@ -66,11 +68,16 @@ export class Game {
       e.preventDefault();
     };
     this.watch.innerText = "00:00";
+    this.changeMineCount();
     this.gameMapHTML.addEventListener("mousedown", this.mouseDown);
     this.gameMapHTML.addEventListener("mouseup", this.mouseUp);
+    // this.btn.addEventListener("click", this.youLose);
   }
 
-  changeWatch=()=> {
+  changeMineCount() {
+    this.mineCount.innerText = this.countMine;
+  }
+  changeWatch = () => {
     this.watchText = "";
     this.countSecond = this.countSecond + 1;
     let second =
@@ -89,17 +96,20 @@ export class Game {
     this.watch.innerText = this.watchText;
     console.log(this.watchText);
     if (minutes == 99) {
-      stopWatch();
+      this.stopWatch();
     }
-  }
+  };
   startWatch() {
     console.log(this.watch);
     console.log(this.watchText);
-    
-    this.watchInterval = setInterval(this.changeWatch, 1000);
+    this.changeWatch();
+    this.watchInterval = setTimeout(() => {
+      this.startWatch();
+    }, 1000);
   }
   stopWatch() {
-    clearInterval(this.watchInterval);
+    clearTimeout(this.watchInterval);
+    console.log("watch Stop");
   }
 
   youWin() {
@@ -214,7 +224,6 @@ export class Game {
     } else if (this.gameMap[index] < 0) {
       this.openCell(index, "n9");
       this.openCells(this.openAllMine(), "mine");
-      this.youLose();
     } else if (this.gameMap[index] == 0) {
       this.openCells(this.openSurroundingZero(index));
     }
@@ -255,11 +264,14 @@ export class Game {
       if (refDiv.classList.contains(props)) {
         refDiv.classList.remove(props);
         this.countFlag -= 1;
+        this.countMine += 1;
       } else {
         this.addClassCss(refDiv, props);
         this.countFlag += 1;
+        this.countMine -= 1;
         this.youWin();
       }
+      this.changeMineCount();
     } else if (
       props == "mine" &&
       !refDiv.classList.contains("flag") &&
@@ -347,6 +359,7 @@ export class Game {
         mine.push(i);
       }
     }
+    this.youLose();
     return mine;
   }
 }
