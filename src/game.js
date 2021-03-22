@@ -12,7 +12,7 @@ export class Game {
     this.gameMapHTML = document.getElementById("mineMap");
     this.watch = document.getElementById("stopWatch");
     this.mineCount = document.getElementById("countMine");
-    // this.btn = document.getElementById("btnstartgame")
+
     this.coordinateSurroundingElements = [
       { x: -1, y: 0 },
       { x: -1, y: -1 },
@@ -71,7 +71,6 @@ export class Game {
     this.changeMineCount();
     this.gameMapHTML.addEventListener("mousedown", this.mouseDown);
     this.gameMapHTML.addEventListener("mouseup", this.mouseUp);
-    // this.btn.addEventListener("click", this.youLose);
   }
 
   changeMineCount() {
@@ -88,7 +87,6 @@ export class Game {
       (this.countSecond / 60) % 60 < 10
         ? "0" + Math.trunc((this.countSecond / 60) % 60)
         : Math.trunc((this.countSecond / 60) % 60).toString();
-    //this.watchText=Math.trunc(minutes) < 10 ?`${Math.trunc(minutes)}`:`"0" + ${Math.trunc(minutes)}`
 
     this.watchText = `${minutes}:${second}`;
 
@@ -112,6 +110,14 @@ export class Game {
     console.log("watch Stop");
   }
 
+  endGame(endCondition){
+    let endDiv= document.createElement("div");
+    endDiv.classList.add("endGame")
+    let text=endCondition=="win"?"You WIN!!!":"You LOSS";
+    endDiv.innerText=text;
+    this.gameMapHTML.append(endDiv)
+
+  }
   youWin() {
     if (
       this.gameMine.every((mine) => {
@@ -125,7 +131,7 @@ export class Game {
       this.openAllMap().forEach((el) => {
         this.openCellController(el);
       });
-      alert("YOU WIN");
+      this.endGame('win');
       this.stopWatch();
       this.gameMapHTML.removeEventListener("mousedown", this.mouseDown);
       this.gameMapHTML.removeEventListener("mouseup", this.mouseUp);
@@ -143,7 +149,7 @@ export class Game {
   youLose() {
     console.log("You Lose");
     this.stopWatch();
-    alert("You Lose");
+    this.endGame('loss');
 
     this.gameMapHTML.removeEventListener("mousedown", this.mouseDown);
     this.gameMapHTML.removeEventListener("mouseup", this.mouseUp);
