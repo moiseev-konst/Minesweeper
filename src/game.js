@@ -113,7 +113,7 @@ export class Game {
   endGame(endCondition){
     let endDiv= document.createElement("div");
     endDiv.classList.add("endGame")
-    let text=endCondition=="win"?"You WIN!!!":"You LOSS";
+    let text=endCondition=="win"?"You won the battle!!!":"You lose, sucker!";
     endDiv.innerText=text;
     this.gameMapHTML.append(endDiv)
 
