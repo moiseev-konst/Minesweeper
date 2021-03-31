@@ -195,7 +195,11 @@ export class Game {
     // console.log("left", eventArg);
     let indexDivClick = this.collectionDivMap.indexOf(eventArg.target);
     // console.log("left", this.collectionDivMap.indexOf(eventArg.target));
-    this.openCellController(indexDivClick);
+    if(!eventArg.target.classList.contains("flag")){
+      this.openCellController(indexDivClick);
+    }
+
+   
   }
   rightButtonClick(eventArg) {
     //console.log("right", eventArg);
