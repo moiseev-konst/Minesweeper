@@ -90,16 +90,15 @@ export class Game {
 
     this.watchText = `${minutes}:${second}`;
 
-    console.log(this.watchText);
+    
     this.watch.innerText = this.watchText;
-    console.log(this.watchText);
+    
     if (minutes == 99) {
       this.stopWatch();
     }
   };
   startWatch() {
-    console.log(this.watch);
-    console.log(this.watchText);
+    
     this.changeWatch();
     this.watchInterval = setTimeout(() => {
       this.startWatch();

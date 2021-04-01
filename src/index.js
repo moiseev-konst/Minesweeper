@@ -8,6 +8,7 @@ btnStart.addEventListener("click", init);
  function init() {
   if(typeof game!=='undefined'){
 game.stopWatch()
+game=null;
   }
 
     console.log("Booom");
