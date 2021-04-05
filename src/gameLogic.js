@@ -1,36 +1,30 @@
-import { createGameMap } from "./createGameMap.js";
-import { writeMine } from "./writeMine.js";
-import { writeNumberToMap } from "./writeNumberToGameMap.js";
+class Logic{
+  youWin() {
+    if (
+      this.gameMine.every((mine) => {
+        return (
+          this.collectionDivMap[mine].classList.contains("flag") &&
+          this.countFlag == this.gameMine.length
+        );
+      })
+    ) {
+      console.log("YOU WIN");
+      this.openAllMap().forEach((el) => {
+        this.openCellController(el);
+      });
+      this.endGame('win');
+      this.stopWatch();
+      this.gameMapHTML.removeEventListener("mousedown", this.mouseDown);
+      this.gameMapHTML.removeEventListener("mouseup", this.mouseUp);
+    }
+  }
+  youLose() {
+    console.log("You Lose");
+    this.stopWatch();
+    this.endGame('loss');
 
-export function ConstructorGameObject(gameSize, quantityMine) {
-  this.gameSize = gameSize;
-  this.quantityMine = quantityMine;
-  this.arrayGameMapElement = [];
-  this.coordinateFirstClick = 0;
-  this.arrayGameMineCoordinate = [];
-  this.countFlag = 0;
-  this.countMine = 0;
+    this.gameMapHTML.removeEventListener("mousedown", this.mouseDown);
+    this.gameMapHTML.removeEventListener("mouseup", this.mouseUp);
+  }
 
-  this.createArrayGameMapElement = (gameSize) => {//за
-    this.arrayGameMapElement = createGameMap(gameSize);
-  };
-
-  this.writeMineInArrayGameMapElement = () => {
-    this.arrayGameMineCoordinate = writeMine(
-      this.arrayGameMapElement,
-      this.coordinateFirstClick,
-      this.quantityMine
-    );
-  };
-
-  this.writeNumberInArrayGameMapElement = () => {
-    writeNumberToMap(this.arrayGameMapElement, this.arrayGameMineCoordinate);
-  };
-  this.parseIdElementInObjectCoordinate = (id) => {
-    return {
-      row: Number.parseInt(/\d+(?=c)/.exec(id).join("")),
-      column: Number.parseInt(/\d+$/.exec(id).join("")),
-    };
-  };
-  this.createArrayGameMapElement(this.gameSize)
 }

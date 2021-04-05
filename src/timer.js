@@ -2,7 +2,7 @@ let timer  = new Timer();
 //timer.OnTick = (ms)=>{
 //	console.log(ms);
 //}
-timer.Start();
+timer.start();
 
 
 class Timer {
@@ -13,25 +13,25 @@ class Timer {
       this._tryUpdateEveryMs = 1000;
     }
 
-    OnTick = ()=>{}  
+    onTick = ()=>{}  
   
-  	Start(){
+  	start(){
         this._reset(); // исключаем ситуацию, что когда либо можно запустить несколько 
       	this._startTime = new Date();
       	this._nextTick();	
     }
 
-  	Stop(){
+  	stop(){
       	this._reset();
     }
   
-  	GetValue(){
+  	getValue(){
     	return this._value;
     }
   	
   	_nextTick(){
       this._value = (new Date()) - this._startTime;
-      this.OnTick(this._value);
+      this.onTick(this._value);
       
       this._timerId = setTimeout(this._nextTick.bind(this), this._tryUpdateEveryMs);
     }
