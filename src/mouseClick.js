@@ -1,4 +1,18 @@
 class MouseClick{
+  
+  addListenerClick() {
+    
+    this.gameMapHTML.addEventListener("contexmenu", (eventArg) => {
+      eventArg.preventDefault();
+    });
+    document.oncontextmenu = (e) => {
+      e.preventDefault();
+    };
+      
+    this.gameMapHTML.addEventListener("mousedown", this.mouseDown);
+    this.gameMapHTML.addEventListener("mouseup", this.mouseUp);
+  }
+
   gameClickController(eventArg, button) {
     console.log(button);
     if (this.collectionDivMap.indexOf(eventArg.target) >= 0) {

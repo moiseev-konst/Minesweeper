@@ -1,23 +1,31 @@
 class Map {
-  constructor() {}
-  createGameMap() {
-    function createDiv() {
-      let div = document.createElement("div");
-      div.classList.add("GameElement");
-      return div;
-    }
+  constructor(gameSize, quantityMine) {
+    this.gameSize = gameSize;
+    this.mapLength = this.gameSize.row * this.gameSize.column;
+    this.quantityMine = quantityMine;
+    this.gameMap = [];
+    this.gameMine = [];
+    this.coordinateSurroundingElements = [
+      { x: -1, y: 0 },
+      { x: -1, y: -1 },
+      { x: 0, y: -1 },
+      { x: 1, y: -1 },
+      { x: 1, y: 0 },
+      { x: 1, y: 1 },
+      { x: 0, y: 1 },
+      { x: -1, y: 1 },
+    ];
+  }
 
+  createGameMap() {
+    this.createMap();
+    this.writeMine();
+    this.writeNumberToMap();
+  }
+  createMap() {
     for (let i = 0; i < this.mapLength; i++) {
       this.gameMap[i] = 0;
-      this.collectionDivMap.push(createDiv());
     }
-    const fragment = document.createDocumentFragment();
-
-    this.gameMapHTML.innerHTML = "";
-    this.collectionDivMap.forEach((div) => {
-      fragment.appendChild(div);
-    });
-    this.gameMapHTML.append(fragment);
   }
   writeMine(firstClick, quantityMine) {
     while (this.gameMine.length < quantityMine) {
@@ -71,5 +79,27 @@ class Map {
       });
     });
     return findIndex;
+  }
+  findSurroundingZero(index) {
+    this.findSurroundElements(index).forEach((el) => {
+      if (this.findZeroElements.indexOf(el) < 0) {
+        this.findZeroElements.push(el);
+        if (this.gameMap[el] == 0) {
+          this.openSurroundingZero(el);
+        }
+      }
+    });
+    this.findZeroElements.push(index);
+    return this.findZeroElements;
+  }
+  findAllMine() {
+    let mine = [];
+    for (let i = 0; i < this.gameMap.length; i++) {
+      if (this.gameMap[i] < 0) {
+        mine.push(i);
+      }
+    }
+    this.youLose();
+    return mine;
   }
 }

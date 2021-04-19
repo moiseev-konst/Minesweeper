@@ -1,4 +1,11 @@
+
 class Logic{
+constructor(){}
+
+startGame(){
+
+}
+
   youWin() {
     if (
       this.gameMine.every((mine) => {

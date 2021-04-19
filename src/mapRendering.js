@@ -1,4 +1,29 @@
-class Rendering{
+class MapRendering {
+  constructor(gameSize) {
+    this.gameSize=gameSize;
+    this.mapLength = this.gameSize.row * this.gameSize.column;
+    this.collectionDivMap=[];
+    this.gameMapHTML = document.getElementById("mineMap");
+
+  } 
+  createDiv() {
+    let div = document.createElement("div");
+    div.classList.add("GameElement");
+    return div;
+  }
+  createGameDiv() {
+    for (let i = 0; i < this.mapLength; i++) {
+      this.collectionDivMap.push(createDiv());
+    }
+  }
+  appendDiv() {
+    const fragment = document.createDocumentFragment();
+    this.gameMapHTML.innerHTML = "";
+    this.collectionDivMap.forEach((div) => {
+      fragment.appendChild(div);
+    });
+    this.gameMapHTML.append(fragment);
+  }
 
   addClassCssController(refDiv, props) {
     if (Number.isInteger(props)) {
@@ -44,4 +69,3 @@ class Rendering{
     div.classList.add(classCss);
   }
 }
-

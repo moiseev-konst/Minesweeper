@@ -1,5 +1,5 @@
-import { ConstructorGameObject } from "./constructorGameObject.js";
-import { elementClick } from "./elementClick.js";
+//import { ConstructorGameObject } from "./constructorGameObject.js";
+//import { elementClick } from "./elementClick.js";
 import { Game } from "./game.js";
 let game;
 const btnStart = document.getElementById("btnstartgame");
