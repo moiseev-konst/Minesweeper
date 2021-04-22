@@ -1,8 +1,8 @@
-class Map {
-  constructor(gameSize, quantityMine) {
-    this.gameSize = gameSize;
-    this.mapLength = this.gameSize.row * this.gameSize.column;
-    this.quantityMine = quantityMine;
+export class Map {
+  constructor() {
+    this.gameSize ;
+    this.mapLength ;
+    this.quantityMine ;
     this.gameMap = [];
     this.gameMine = [];
     this.coordinateSurroundingElements = [
@@ -16,37 +16,47 @@ class Map {
       { x: -1, y: 1 },
     ];
   }
-
-  createGameMap() {
+  newState=(state)=> {
+    this.gameSize = state.gameSize;
+    this.quantityMine = state.quantityMine;
+    this.gameMap = state.gameMap;
+    this.gameMine = state.gameMine;
+    this.mapLength = this.gameSize.row * this.gameSize.column;
+  }
+  getMap = () => {};
+  createGameMap(state) {
+    this.newState(state);
     this.createMap();
-    this.writeMine();
+    this.writeMine(state.firstClick);
     this.writeNumberToMap();
+    let mapObj = { gameMap: this.gameMap, gameMine: this.gameMine };
+    this.getMap(mapObj);
   }
   createMap() {
     for (let i = 0; i < this.mapLength; i++) {
       this.gameMap[i] = 0;
     }
   }
-  writeMine(firstClick, quantityMine) {
-    while (this.gameMine.length < quantityMine) {
+  writeMine(firstClick) {
+    while (this.gameMine.length < this.quantityMine) {
       let randomMine = Number.parseInt(this.mapLength * Math.random() + 1);
       if (randomMine !== firstClick && this.gameMine.indexOf(randomMine) < 0) {
         this.gameMine.push(randomMine);
       }
     }
   }
-  writeNumberToMap(gameMap, gameMine) {
+  writeNumberToMap() {
     console.log("writeNumber");
-    gameMine.forEach((indexMine) => {
-      gameMap[indexMine] = -1;
+    this.gameMine.forEach((indexMine) => {
+      this.gameMap[indexMine] = -1;
       let surroundElements = this.findSurroundElements(indexMine);
       surroundElements.forEach((el) => {
-        if (gameMap[el] >= 0) {
-          gameMap[el] += 1;
+        if (this.gameMap[el] >= 0) {
+          this.gameMap[el] += 1;
         }
       });
     });
-    console.log(gameMap);
+    console.log(this.gameMap);
   }
   parseIndexToCoordinates(index) {
     let row = Number.parseInt(index / this.gameSize.row);
