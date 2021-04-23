@@ -9,7 +9,21 @@ export class GameState {
     this.gameMine = [];
     this.arrayOpenCells = [];
     this.subscribes = [];
+    this.arrayFlagCells = [];
     this.firstClick=0;
+  }
+  getState() {
+    let state = {
+      gameSize: this.gameSize,
+      mapLength: this.mapLength,
+      quantityMine: this.quantityMine,
+      gameMap: this.gameMap,
+      gameMine: this.gameMine,
+      arrayOpenCells: this.arrayOpenCells,
+      arrayFlagCells: this.arrayFlagCells,
+      firstClick:this.firstClick,
+    };
+    return state;
   }
   setStateMap(mapObj) {
     this.gameMap = mapObj.gameMap;
@@ -24,16 +38,5 @@ export class GameState {
       sub(data);
     });
   }
-  getState() {
-    let state = {
-      gameSize: this.gameSize,
-      mapLength: this.mapLength,
-      quantityMine: this.quantityMine,
-      gameMap: this.gameMap,
-      gameMine: this.gameMine,
-      arrayOpenCells: this.arrayOpenCells,
-      firstClick:this.firstClick,
-    };
-    return state;
-  }
+ 
 }

@@ -1,28 +1,77 @@
-class MapRendering {
-  constructor(gameSize) {
-    this.gameSize=gameSize;
-    this.mapLength = this.gameSize.row * this.gameSize.column;
-    this.collectionDivMap=[];
+export class MapRendering {
+  constructor() {
+    this.gameSize;
+    this.mapLength;
+    this.collectionDivMap = [];
     this.gameMapHTML = document.getElementById("mineMap");
+    this.arrayOpenCells;
+    this.arrayFlagCells;
+    this.gameMap;
+  }
 
-  } 
+  createGameDiv(state) {
+    this.clear();
+    this.getState(state);
+    this.createCollectionDiv();
+    this.renderingMap();
+    this.appendDiv();
+  }
+  getState=  (state)=> {
+    this.gameSize = state.gameSize;
+    this.mapLength = state.gameSize.row * state.gameSize.column;
+    this.arrayOpenCells = state.arrayOpenCells;
+    this.arrayFlagCells = state.arrayFlagCells;
+    this.gameMap = state.gameMap;
+  };
+  getIndexDiv(refDiv) {
+    let index = this.collectionDivMap.indexOf(refDiv);
+    return index;
+  }
+  clear() {
+    this.gameMapHTML.innerHTML = "";
+    this.collectionDivMap = [];
+  }
   createDiv() {
     let div = document.createElement("div");
     div.classList.add("GameElement");
     return div;
   }
-  createGameDiv() {
+  createCollectionDiv() {
     for (let i = 0; i < this.mapLength; i++) {
-      this.collectionDivMap.push(createDiv());
+      this.collectionDivMap.push(this.createDiv());
     }
   }
   appendDiv() {
     const fragment = document.createDocumentFragment();
-    this.gameMapHTML.innerHTML = "";
+    
     this.collectionDivMap.forEach((div) => {
       fragment.appendChild(div);
     });
     this.gameMapHTML.append(fragment);
+  }
+
+  renderingMap() {
+    this.renderFlag();
+    this.renderCells();
+  }
+  renderFlag() {
+    for (let i = 0; i < this.arrayFlagCells.length; i++) {
+      this.collectionDivMap[this.arrayFlagCells[i]].classList.add("Flag");
+    }
+  }
+  renderCells() {
+    for (let i = 0; i < this.arrayOpenCells.length; i++) {
+      if (this.collectionDivMap[this.arrayOpenCells[i]].classList.length < 2) {
+        this.collectionDivMap[this.arrayOpenCells[i]].classList.add(selectСlassCss(this.arrayOpenCells[i]));
+      }
+    }
+  }
+  selectСlassCss(index) {
+    if (this.gameMap[index] >= 0) {
+      return `n${props}`;
+    } else {
+      return "mine";
+    }
   }
 
   addClassCssController(refDiv, props) {

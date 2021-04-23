@@ -3,8 +3,10 @@
 import { Game } from "./game.js";
 import { GameState } from "./stateGame.js";
 import { Map } from "./Map.js";
+import { MapRendering } from "./mapRendering.js";
 let game;
 const btnStart = document.getElementById("btnstartgame");
+const gameMapHTML = document.getElementById("mineMap");
 btnStart.addEventListener("click", init);
 
 /*function init() {
@@ -20,7 +22,9 @@ btnStart.addEventListener("click", init);
 function init() {
  let game = new GameState({ row: 16, column: 16 }, 45);
   let map=new Map();
-  map.getState=(mapObj)=>{game.setStateMap(mapObj)}
+  let render=new MapRendering()
+  game.addSubscribes(()=>{render.createGameDiv(game.getState())})
+  map.sendMap=(mapObj)=>{game.setStateMap(mapObj)}
 map.createGameMap(game.getState());
   console.log(game)
 }

@@ -16,21 +16,22 @@ export class Map {
       { x: -1, y: 1 },
     ];
   }
-  newState=(state)=> {
+  getState=(state)=> {
     this.gameSize = state.gameSize;
     this.quantityMine = state.quantityMine;
     this.gameMap = state.gameMap;
     this.gameMine = state.gameMine;
     this.mapLength = this.gameSize.row * this.gameSize.column;
   }
-  getMap = () => {};
+  sendMap = () => {};
+  
   createGameMap(state) {
-    this.newState(state);
+    this.getState(state);
     this.createMap();
     this.writeMine(state.firstClick);
     this.writeNumberToMap();
     let mapObj = { gameMap: this.gameMap, gameMine: this.gameMine };
-    this.getMap(mapObj);
+    this.sendMap(mapObj);
   }
   createMap() {
     for (let i = 0; i < this.mapLength; i++) {
