@@ -1,14 +1,14 @@
 export class MapRendering {
-  constructor() {
+  constructor(gameMapHTML) {
     this.gameSize;
     this.mapLength;
     this.collectionDivMap = [];
-    this.gameMapHTML = document.getElementById("mineMap");
+    this.gameMapHTML = gameMapHTML;
     this.arrayOpenCells;
     this.arrayFlagCells;
     this.gameMap;
   }
-
+render=()=>{};
   createGameDiv(state) {
     this.clear();
     this.getState(state);
@@ -25,6 +25,7 @@ export class MapRendering {
   };
   getIndexDiv(refDiv) {
     let index = this.collectionDivMap.indexOf(refDiv);
+    console.log('render index');
     return index;
   }
   clear() {
@@ -56,19 +57,19 @@ export class MapRendering {
   }
   renderFlag() {
     for (let i = 0; i < this.arrayFlagCells.length; i++) {
-      this.collectionDivMap[this.arrayFlagCells[i]].classList.add("Flag");
+      this.collectionDivMap[this.arrayFlagCells[i]].classList.add("flag");
     }
   }
   renderCells() {
     for (let i = 0; i < this.arrayOpenCells.length; i++) {
       if (this.collectionDivMap[this.arrayOpenCells[i]].classList.length < 2) {
-        this.collectionDivMap[this.arrayOpenCells[i]].classList.add(selectСlassCss(this.arrayOpenCells[i]));
+        this.collectionDivMap[this.arrayOpenCells[i]].classList.add(this.selectСlassCss(this.arrayOpenCells[i]));
       }
     }
   }
   selectСlassCss(index) {
     if (this.gameMap[index] >= 0) {
-      return `n${props}`;
+      return `n${this.gameMap[index]}`;
     } else {
       return "mine";
     }
