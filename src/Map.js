@@ -15,6 +15,7 @@ export class Map {
       { x: 0, y: 1 },
       { x: -1, y: 1 },
     ];
+    this.findZeroElements = [];
   }
   getState=(state)=> {
     this.gameSize = state.gameSize;
@@ -96,7 +97,7 @@ export class Map {
       if (this.findZeroElements.indexOf(el) < 0) {
         this.findZeroElements.push(el);
         if (this.gameMap[el] == 0) {
-          this.openSurroundingZero(el);
+          this.findSurroundingZero(el);
         }
       }
     });

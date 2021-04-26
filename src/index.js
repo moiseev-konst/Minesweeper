@@ -5,7 +5,7 @@ import { GameState } from "./stateGame.js";
 import { Map } from "./Map.js";
 import { MapRendering } from "./mapRendering.js";
 import { MouseClick } from "./mouseClick.js";
-
+import { Logic } from "./gameLogic.js";
 let game;
 const btnStart = document.getElementById("btnstartgame");
 const gameMapHTML = document.getElementById("mineMap");
@@ -22,10 +22,24 @@ btnStart.addEventListener("click", init);
   game.start();
 }*/
 function init() {
-  let game = new GameState({ row: 16, column: 16 }, 45);
+  let state = new GameState({ row: 16, column: 16 }, 45);
   let map = new Map();
   let render = new MapRendering(gameMapHTML);
   let mouse = new MouseClick(gameMapHTML);
+  let logic = new Logic();
+
+  logic.sendCell = (newArr) => {
+    state.setStateLeftClick(newArr);
+  };
+  logic.sendFlag = (newArr) => {
+    state.setStateRightClick(newArr);
+  };
+  logic.sendFirst=(first)=>{state.setStateFirstClick(first)}
+  logic.sendCells = (arr) => {state.setStateArray(arr)};
+  logic.findCells = (index) => {
+   return map.findSurroundingZero(index);
+  };
+  logic.state=()=>{return state.getState()}
 
   mouse.addListenerClick();
 
@@ -33,19 +47,20 @@ function init() {
     return render.getIndexDiv(el);
   };
   mouse.sendLeftClick = (index) => {
-    game.setStateLeftClick(index);
+    logic.checkingCell(index);
   };
   mouse.sendRightClick = (index) => {
-    game.setStateRightClick(index);
+    logic.checkingFlag(index);
   };
   render.render = (data) => {
     render.createGameDiv(data);
   };
-  game.addSubscribes(render.render);
+
+  state.addSubscribes(render.render);
   map.sendMap = (mapObj) => {
-    game.setStateMap(mapObj);
+    state.setStateMap(mapObj);
   };
-  map.createGameMap(game.getState());
-  console.log(game);
+  map.createGameMap(state.getState());
+  console.log(state);
   // mouse.removeListnerClick()
 }
