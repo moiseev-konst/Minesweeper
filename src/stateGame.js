@@ -25,22 +25,22 @@ export class GameState {
     };
     return state;
   }
-  setStateFirstClick(firstClick){
-this.firstClick=firstClick;
-this.arrayOpenCells.push(firstClick)
-this.deliver(this.getState());
+  setStateFirstClick(firstClick, arrayOpenCells) {
+    this.firstClick = firstClick;
+    this.arrayOpenCells = arrayOpenCells;
+    this.deliver(this.getState());
   }
-  setStateLeftClick(index) {
-    this.arrayOpenCells.push(index);
+  setStateLeftClick(indexes) {
+    this.arrayOpenCells = indexes;
     this.deliver(this.getState());
   }
   setStateRightClick(newArrayFlagCells) {
     this.arrayFlagCells = newArrayFlagCells;
     this.deliver(this.getState());
   }
-  setStateArray(arrayOpenCells){
-this.arrayOpenCells=this.arrayOpenCells.concat(arrayOpenCells);
-this.deliver(this.getState());
+  setStateArray(arrayOpenCells) {
+    this.arrayOpenCells = this.arrayOpenCells.concat(arrayOpenCells);
+    this.deliver(this.getState());
   }
   setStateMap(mapObj) {
     this.gameMap = mapObj.gameMap;

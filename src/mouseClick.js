@@ -41,7 +41,7 @@ export class MouseClick {
         console.log("click on button");
         this.oneButtonCkick(eventArg);
       } else if (button == 3) {
-        this.twoButtonsClick(eventArg);
+        this.twoBtnClick(eventArg);
       }
     }
   }
@@ -54,12 +54,14 @@ export class MouseClick {
   }
   sendLeftClick = () => {};
   sendRightClick = () => {};
+  sendTwoBtn = () => {};
+  twoBtnClick(eventArg) {
+    this.sendTwoBtn(this.getIndexDiv(eventArg.target));
+  }
   leftButtonClick(eventArg) {
-    console.log("я вызван");
     this.sendLeftClick(this.getIndexDiv(eventArg.target));
   }
   rightButtonClick(eventArg) {
-    console.log("я right вызван");
     this.sendRightClick(this.getIndexDiv(eventArg.target));
   }
   /* leftButtonClick(eventArg) {
@@ -96,7 +98,7 @@ export class MouseClick {
     this.openCellController(indexDivClick, "flag");
   }*/
 
-  twoButtonsClick(eventArg) {
+  /*twoButtonsClick(eventArg) {
     let surround = [];
     let surroundEl = [];
     let flagMine = 0;
@@ -116,5 +118,5 @@ export class MouseClick {
         this.openCellController(index);
       });
     }
-  }
+  }*/
 }

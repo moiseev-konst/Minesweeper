@@ -28,18 +28,24 @@ function init() {
   let mouse = new MouseClick(gameMapHTML);
   let logic = new Logic();
 
-  logic.sendCell = (newArr) => {
+  logic.onSendCell = (newArr) => {
     state.setStateLeftClick(newArr);
   };
-  logic.sendFlag = (newArr) => {
+  logic.onSendFlag = (newArr) => {
     state.setStateRightClick(newArr);
   };
-  logic.sendFirst=(first)=>{state.setStateFirstClick(first)}
-  logic.sendCells = (arr) => {state.setStateArray(arr)};
-  logic.findCells = (index) => {
+  logic.onSendFirst=(first,index)=>{state.setStateFirstClick(first,index)}
+  logic.onSendCells = (arr) => {state.setStateArray(arr)};
+  logic.onFindZeroCells = (index) => {
    return map.findSurroundingZero(index);
   };
+  logic.onFindCells = (index) => {
+    return map.findSurroundElements(index);
+   };
   logic.state=()=>{return state.getState()}
+  logic.getCollectionDiv=()=>{
+    return render.getCollectionDiv()
+  }
 
   mouse.addListenerClick();
 
@@ -52,6 +58,9 @@ function init() {
   mouse.sendRightClick = (index) => {
     logic.checkingFlag(index);
   };
+  mouse.sendTwoBtn=(index)=>{
+    logic.checkingTwoBtn(index)
+  }
   render.render = (data) => {
     render.createGameDiv(data);
   };

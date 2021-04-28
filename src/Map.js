@@ -101,7 +101,10 @@ export class Map {
         }
       }
     });
-    this.findZeroElements.push(index);
+    if(this.findZeroElements.indexOf(index)<0){
+      this.findZeroElements.push(index);
+    }
+    
     return this.findZeroElements;
   }
   findAllMine() {

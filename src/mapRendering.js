@@ -28,6 +28,9 @@ render=()=>{};
     console.log('render index');
     return index;
   }
+  getCollectionDiv(){
+    return this.collectionDivMap
+  }
   clear() {
     this.gameMapHTML.innerHTML = "";
     this.collectionDivMap = [];
