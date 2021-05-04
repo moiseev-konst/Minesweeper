@@ -40,7 +40,7 @@ export class Logic {
       this.arrayOpenCells.indexOf(index) < 0
     ) {
       if (this.gameMap[index] < 0) {
-        // this.youLose();n
+        this.youLose(index)
       } else if (this.gameMap[index] == 0) {
         this.arrayOpenCells = this.arrayOpenCells.concat(
           this.onFindZeroCells(index)
@@ -73,9 +73,9 @@ export class Logic {
     let collectionDiv = this.getCollectionDiv();
     this.getState();
     console.log("две кнопки");
-   // let indexDiv = collectionDiv.indexOf(index);
+    // let indexDiv = collectionDiv.indexOf(index);
     allSurround = this.onFindCells(index);
-    console.log(collectionDiv[17].classList.contains("flag"))
+    console.log(collectionDiv[17].classList.contains("flag"));
     noFlagSurround = allSurround.filter((el) => {
       if (collectionDiv[el].classList.contains("flag")) {
         flag += 1;
@@ -90,13 +90,15 @@ export class Logic {
       });
     }
   }
-  onFindCells=()=>{}
+  onFindCells = () => {};
   onFindZeroCells = () => {};
   onSendCell = () => {};
   onSendFlag = () => {};
   onSendCells = () => {};
   onSendFirst = () => {};
   getCollectionDiv = () => {};
+  getAllMine = () => {};
+  onSendEndGame = () => {};
 
   youWin() {
     if (
@@ -117,17 +119,9 @@ export class Logic {
       this.gameMapHTML.removeEventListener("mouseup", this.mouseUp);
     }
   }
-  youLose() {
+  youLose(index) {
     console.log("You Lose");
-
-    this.endGame("lose");
-  }
-  endGame(endCondition) {
-    let endDiv = document.createElement("div");
-    endDiv.classList.add("endGame");
-    let text =
-      endCondition == "win" ? "You won the battle!!!" : "You lose, sucker!";
-    endDiv.innerText = text;
-    this.gameMapHTML.append(endDiv);
+   this.arrayOpenCells=this.arrayOpenCells.concat(this.getAllMine());
+    this.onSendEndGame("lose", index,this.arrayOpenCells);
   }
 }

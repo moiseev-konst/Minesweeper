@@ -34,18 +34,30 @@ function init() {
   logic.onSendFlag = (newArr) => {
     state.setStateRightClick(newArr);
   };
-  logic.onSendFirst=(first,index)=>{state.setStateFirstClick(first,index)}
-  logic.onSendCells = (arr) => {state.setStateArray(arr)};
+  logic.onSendFirst = (first, index) => {
+    state.setStateFirstClick(first, index);
+  };
+  logic.onSendCells = (arr) => {
+    state.setStateArray(arr);
+  };
   logic.onFindZeroCells = (index) => {
-   return map.findSurroundingZero(index);
+    return map.findSurroundingZero(index);
   };
   logic.onFindCells = (index) => {
     return map.findSurroundElements(index);
-   };
-  logic.state=()=>{return state.getState()}
-  logic.getCollectionDiv=()=>{
-    return render.getCollectionDiv()
-  }
+  };
+  logic.state = () => {
+    return state.getState();
+  };
+  logic.getCollectionDiv = () => {
+    return render.getCollectionDiv();
+  };
+  logic.getAllMine = () => {
+    return map.findAllMine();
+  };
+  logic.onSendEndGame = (end, index,arrayOpenCells) => {
+    state.setStateEndGame(end, index,arrayOpenCells);
+  };
 
   mouse.addListenerClick();
 
@@ -58,9 +70,9 @@ function init() {
   mouse.sendRightClick = (index) => {
     logic.checkingFlag(index);
   };
-  mouse.sendTwoBtn=(index)=>{
-    logic.checkingTwoBtn(index)
-  }
+  mouse.sendTwoBtn = (index) => {
+    logic.checkingTwoBtn(index);
+  };
   render.render = (data) => {
     render.createGameDiv(data);
   };

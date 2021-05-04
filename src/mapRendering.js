@@ -7,29 +7,36 @@ export class MapRendering {
     this.arrayOpenCells;
     this.arrayFlagCells;
     this.gameMap;
+    this.endGame;
+    this.explosion;
   }
-render=()=>{};
+  render = () => {};
   createGameDiv(state) {
     this.clear();
     this.getState(state);
     this.createCollectionDiv();
     this.renderingMap();
     this.appendDiv();
+    if (this.endGame != undefined) {
+      this.renderEndGame(this.endGame);
+    }
   }
-  getState=  (state)=> {
+  getState = (state) => {
     this.gameSize = state.gameSize;
     this.mapLength = state.gameSize.row * state.gameSize.column;
     this.arrayOpenCells = state.arrayOpenCells;
     this.arrayFlagCells = state.arrayFlagCells;
     this.gameMap = state.gameMap;
+    this.endGame = state.endGame;
+    this.explosion = state.explosion;
   };
   getIndexDiv(refDiv) {
     let index = this.collectionDivMap.indexOf(refDiv);
-    console.log('render index');
+    console.log("render index");
     return index;
   }
-  getCollectionDiv(){
-    return this.collectionDivMap
+  getCollectionDiv() {
+    return this.collectionDivMap;
   }
   clear() {
     this.gameMapHTML.innerHTML = "";
@@ -47,7 +54,7 @@ render=()=>{};
   }
   appendDiv() {
     const fragment = document.createDocumentFragment();
-    
+
     this.collectionDivMap.forEach((div) => {
       fragment.appendChild(div);
     });
@@ -58,6 +65,14 @@ render=()=>{};
     this.renderFlag();
     this.renderCells();
   }
+  renderEndGame(endCondition) {
+    let endDiv = document.createElement("div");
+    endDiv.classList.add("endGame");
+    let text =
+      endCondition == "win" ? "You won the battle!!!" : "You lose, sucker!";
+    endDiv.innerText = text;
+    this.gameMapHTML.append(endDiv);
+  }
   renderFlag() {
     for (let i = 0; i < this.arrayFlagCells.length; i++) {
       this.collectionDivMap[this.arrayFlagCells[i]].classList.add("flag");
@@ -66,7 +81,14 @@ render=()=>{};
   renderCells() {
     for (let i = 0; i < this.arrayOpenCells.length; i++) {
       if (this.collectionDivMap[this.arrayOpenCells[i]].classList.length < 2) {
-        this.collectionDivMap[this.arrayOpenCells[i]].classList.add(this.selectСlassCss(this.arrayOpenCells[i]));
+        if (this.explosion != this.arrayOpenCells[i]) {
+          this.collectionDivMap[this.arrayOpenCells[i]].classList.add(
+            this.selectСlassCss(this.arrayOpenCells[i])
+          );
+        }else {
+          this.collectionDivMap[this.arrayOpenCells[i]].classList.add("n9");
+       
+      } 
       }
     }
   }

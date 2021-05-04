@@ -1,8 +1,8 @@
 export class Map {
   constructor() {
-    this.gameSize ;
-    this.mapLength ;
-    this.quantityMine ;
+    this.gameSize;
+    this.mapLength;
+    this.quantityMine;
     this.gameMap = [];
     this.gameMine = [];
     this.coordinateSurroundingElements = [
@@ -17,15 +17,15 @@ export class Map {
     ];
     this.findZeroElements = [];
   }
-  getState=(state)=> {
+  getState = (state) => {
     this.gameSize = state.gameSize;
     this.quantityMine = state.quantityMine;
     this.gameMap = state.gameMap;
     this.gameMine = state.gameMine;
     this.mapLength = this.gameSize.row * this.gameSize.column;
-  }
+  };
   sendMap = () => {};
-  
+
   createGameMap(state) {
     this.getState(state);
     this.createMap();
@@ -101,10 +101,10 @@ export class Map {
         }
       }
     });
-    if(this.findZeroElements.indexOf(index)<0){
+    if (this.findZeroElements.indexOf(index) < 0) {
       this.findZeroElements.push(index);
     }
-    
+
     return this.findZeroElements;
   }
   findAllMine() {
@@ -114,7 +114,6 @@ export class Map {
         mine.push(i);
       }
     }
-    this.youLose();
     return mine;
   }
 }

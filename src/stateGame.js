@@ -11,6 +11,8 @@ export class GameState {
     this.subscribes = [];
     this.arrayFlagCells = [];
     this.firstClick;
+    this.endGame;
+    this.explosion;
   }
   getState() {
     let state = {
@@ -22,6 +24,8 @@ export class GameState {
       arrayOpenCells: this.arrayOpenCells,
       arrayFlagCells: this.arrayFlagCells,
       firstClick: this.firstClick,
+      endGame: this.endGame,
+      explosion: this.explosion,
     };
     return state;
   }
@@ -40,6 +44,12 @@ export class GameState {
   }
   setStateArray(arrayOpenCells) {
     this.arrayOpenCells = this.arrayOpenCells.concat(arrayOpenCells);
+    this.deliver(this.getState());
+  }
+  setStateEndGame(end, indexExplosion, newArrayOpenCells) {
+    this.endGame = end;
+    this.explosion = indexExplosion;
+    this.arrayOpenCells = newArrayOpenCells;
     this.deliver(this.getState());
   }
   setStateMap(mapObj) {
