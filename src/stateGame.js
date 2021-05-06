@@ -13,6 +13,7 @@ export class GameState {
     this.firstClick;
     this.endGame;
     this.explosion;
+    this.timerValue=0;
   }
   getState() {
     let state = {
@@ -26,6 +27,7 @@ export class GameState {
       firstClick: this.firstClick,
       endGame: this.endGame,
       explosion: this.explosion,
+      timerValue: this.timerValue
     };
     return state;
   }
@@ -46,15 +48,24 @@ export class GameState {
     this.arrayOpenCells = this.arrayOpenCells.concat(arrayOpenCells);
     this.deliver(this.getState());
   }
-  setStateEndGame(end, indexExplosion, newArrayOpenCells) {
+  setStateEndGame(end, newArrayOpenCells, indexExplosion) {
     this.endGame = end;
-    this.explosion = indexExplosion;
-    this.arrayOpenCells = newArrayOpenCells;
+    if (indexExplosion !== undefined) {
+      this.explosion = indexExplosion;
+      this.arrayOpenCells = newArrayOpenCells;
+    } else {
+      this.arrayOpenCells = newArrayOpenCells;
+    }
+
     this.deliver(this.getState());
   }
   setStateMap(mapObj) {
     this.gameMap = mapObj.gameMap;
     this.gameMine = mapObj.gameMine;
+    this.deliver(this.getState());
+  }
+  setTimerValue(value) {
+    this.timerValue = Number.parseInt(value/1000);
     this.deliver(this.getState());
   }
   addSubscribes(sub) {

@@ -1,10 +1,7 @@
-let timer = new Timer();
-//timer.OnTick = (ms)=>{
-//	console.log(ms);
-//}
-timer.start();
 
-class Timer {
+
+
+export class Timer {
   constructor() {
     this._timerId = null;
     this._value = 0;

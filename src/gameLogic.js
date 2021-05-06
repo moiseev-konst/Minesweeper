@@ -28,6 +28,7 @@ export class Logic {
     if (this.firstClick == undefined) {
       this.firstClick = index;
       this.arrayOpenCells.push(index);
+      this.onStartWatch()
       if (this.gameMap[index] == 0) {
         this.arrayOpenCells = this.arrayOpenCells.concat(
           this.onFindZeroCells(index)
@@ -40,27 +41,33 @@ export class Logic {
       this.arrayOpenCells.indexOf(index) < 0
     ) {
       if (this.gameMap[index] < 0) {
-        this.youLose(index)
+        this.youLose(index);
       } else if (this.gameMap[index] == 0) {
         this.arrayOpenCells = this.arrayOpenCells.concat(
           this.onFindZeroCells(index)
         );
         this.onSendCell(this.arrayOpenCells);
+        this.youWin();
       } else {
         this.arrayOpenCells.push(index);
         this.onSendCell(this.arrayOpenCells);
+        this.youWin();
       }
     }
   }
 
   checkingFlag(index) {
     this.getState();
+
     if (
       this.arrayFlagCells.indexOf(index) < 0 &&
       this.arrayOpenCells.indexOf(index) < 0
     ) {
-      this.arrayFlagCells.push(index);
-      this.onSendFlag(this.arrayFlagCells);
+      if (this.arrayFlagCells.length < this.quantityMine) {
+        this.arrayFlagCells.push(index);
+        this.onSendFlag(this.arrayFlagCells);
+        this.youWin();
+      }
     } else if (this.arrayFlagCells.indexOf(index) >= 0) {
       this.arrayFlagCells.splice(this.arrayFlagCells.indexOf(index), 1);
       this.onSendFlag(this.arrayFlagCells);
@@ -99,29 +106,31 @@ export class Logic {
   getCollectionDiv = () => {};
   getAllMine = () => {};
   onSendEndGame = () => {};
+onStartWatch=()=>{}
+onStopWatch=()=>{}
 
   youWin() {
     if (
       this.gameMine.every((mine) => {
         return (
-          this.collectionDivMap[mine].classList.contains("flag") &&
-          this.countFlag == this.gameMine.length
+          this.arrayFlagCells.indexOf(mine) >= 0 &&
+          this.arrayFlagCells.length == this.gameMine.length
         );
       })
     ) {
-      console.log("YOU WIN");
-      this.openAllMap().forEach((el) => {
-        this.openCellController(el);
-      });
-      this.endGame("win");
-      this.stopWatch();
-      this.gameMapHTML.removeEventListener("mousedown", this.mouseDown);
-      this.gameMapHTML.removeEventListener("mouseup", this.mouseUp);
+      let allMap = [];
+      for (let i = 0; i < this.gameMap.length; i++) {
+        allMap.push(i);
+      }
+      this.arrayOpenCells = allMap;
+      this.onStopWatch()
+      this.onSendEndGame("win", this.arrayOpenCells);
     }
   }
   youLose(index) {
     console.log("You Lose");
-   this.arrayOpenCells=this.arrayOpenCells.concat(this.getAllMine());
-    this.onSendEndGame("lose", index,this.arrayOpenCells);
+    this.onStopWatch()
+    this.arrayOpenCells = this.arrayOpenCells.concat(this.getAllMine());
+    this.onSendEndGame("lose", this.arrayOpenCells, index);
   }
 }

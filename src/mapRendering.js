@@ -1,16 +1,19 @@
 export class MapRendering {
-  constructor(gameMapHTML) {
+  constructor(gameMapHTML,watch) {
     this.gameSize;
     this.mapLength;
     this.collectionDivMap = [];
     this.gameMapHTML = gameMapHTML;
+    this.watch=watch;
     this.arrayOpenCells;
     this.arrayFlagCells;
     this.gameMap;
     this.endGame;
     this.explosion;
+    this.timerValue;
   }
   render = () => {};
+   
   createGameDiv(state) {
     this.clear();
     this.getState(state);
@@ -29,6 +32,7 @@ export class MapRendering {
     this.gameMap = state.gameMap;
     this.endGame = state.endGame;
     this.explosion = state.explosion;
+    this.timerValue=state.timerValue;
   };
   getIndexDiv(refDiv) {
     let index = this.collectionDivMap.indexOf(refDiv);
@@ -60,7 +64,24 @@ export class MapRendering {
     });
     this.gameMapHTML.append(fragment);
   }
+  watchRender=()=>{}
+  renderWatch(state) {
+    let watchText = "00:00";
+    this.getState(state)
+    let second =
+    this.timerValue % 60 < 10
+        ? "0" + Math.trunc(this.timerValue % 60)
+        : Math.trunc(this.timerValue % 60).toString();
+    let minutes =
+      (this.timerValue / 60) % 60 < 10
+        ? "0" + Math.trunc((this.timerValue / 60) % 60)
+        : Math.trunc((this.timerValue/ 60) % 60).toString();
 
+        watchText = `${minutes}:${second}`;
+
+    
+    this.watch.innerText = watchText;
+  }
   renderingMap() {
     this.renderFlag();
     this.renderCells();
@@ -85,10 +106,9 @@ export class MapRendering {
           this.collectionDivMap[this.arrayOpenCells[i]].classList.add(
             this.selectСlassCss(this.arrayOpenCells[i])
           );
-        }else {
+        } else {
           this.collectionDivMap[this.arrayOpenCells[i]].classList.add("n9");
-       
-      } 
+        }
       }
     }
   }
