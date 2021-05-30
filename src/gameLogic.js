@@ -28,7 +28,7 @@ export class Logic {
     if (this.firstClick == undefined) {
       this.firstClick = index;
       this.arrayOpenCells.push(index);
-      this.onStartWatch()
+      this.onStartWatch();
       if (this.gameMap[index] == 0) {
         this.arrayOpenCells = this.arrayOpenCells.concat(
           this.onFindZeroCells(index)
@@ -106,8 +106,9 @@ export class Logic {
   getCollectionDiv = () => {};
   getAllMine = () => {};
   onSendEndGame = () => {};
-onStartWatch=()=>{}
-onStopWatch=()=>{}
+  onStartWatch = () => {};
+  onStopWatch = () => {};
+  onStopClick = () => {};
 
   youWin() {
     if (
@@ -123,13 +124,15 @@ onStopWatch=()=>{}
         allMap.push(i);
       }
       this.arrayOpenCells = allMap;
-      this.onStopWatch()
+      this.onStopWatch();
+      this.onStopClick();
       this.onSendEndGame("win", this.arrayOpenCells);
     }
   }
   youLose(index) {
     console.log("You Lose");
-    this.onStopWatch()
+    this.onStopWatch();
+    this.onStopClick();
     this.arrayOpenCells = this.arrayOpenCells.concat(this.getAllMine());
     this.onSendEndGame("lose", this.arrayOpenCells, index);
   }

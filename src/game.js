@@ -50,14 +50,6 @@ export class Game {
     this.gameMapHTML.append(fragment);
   }
 
-  mouseDown = (eventArg) => {
-    console.log("mousedown");
-    this.button = eventArg.buttons;
-  };
-
-  mouseUp = (eventArg) => {
-    this.gameClickController(eventArg, this.button);
-  };
 
   start() {
     this.createGameMap(this.mapLength);

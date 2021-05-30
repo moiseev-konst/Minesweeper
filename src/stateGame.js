@@ -1,4 +1,4 @@
-import { Map } from "./Map.js";
+
 
 export class GameState {
   constructor(gameSize, quantityMine) {

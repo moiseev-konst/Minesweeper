@@ -1,19 +1,21 @@
 export class MapRendering {
-  constructor(gameMapHTML,watch) {
+  constructor(gameMapHTML, watch, countMine) {
     this.gameSize;
     this.mapLength;
     this.collectionDivMap = [];
     this.gameMapHTML = gameMapHTML;
-    this.watch=watch;
+    this.countMine = countMine;
+    this.watch = watch;
     this.arrayOpenCells;
     this.arrayFlagCells;
     this.gameMap;
     this.endGame;
     this.explosion;
     this.timerValue;
+    this.quantityMine;
   }
   render = () => {};
-   
+
   createGameDiv(state) {
     this.clear();
     this.getState(state);
@@ -32,7 +34,8 @@ export class MapRendering {
     this.gameMap = state.gameMap;
     this.endGame = state.endGame;
     this.explosion = state.explosion;
-    this.timerValue=state.timerValue;
+    this.timerValue = state.timerValue;
+    this.quantityMine = state.quantityMine;
   };
   getIndexDiv(refDiv) {
     let index = this.collectionDivMap.indexOf(refDiv);
@@ -64,28 +67,55 @@ export class MapRendering {
     });
     this.gameMapHTML.append(fragment);
   }
-  watchRender=()=>{}
+  watchRender = () => {};
+  renderCountMine() {
+    let text = `${this.quantityMine - this.arrayFlagCells.length}`;
+    this.countMine.innerText = text;
+  }
   renderWatch(state) {
     let watchText = "00:00";
-    this.getState(state)
+    this.getState(state);
     let second =
-    this.timerValue % 60 < 10
+      this.timerValue % 60 < 10
         ? "0" + Math.trunc(this.timerValue % 60)
         : Math.trunc(this.timerValue % 60).toString();
     let minutes =
       (this.timerValue / 60) % 60 < 10
         ? "0" + Math.trunc((this.timerValue / 60) % 60)
-        : Math.trunc((this.timerValue/ 60) % 60).toString();
+        : Math.trunc((this.timerValue / 60) % 60).toString();
 
-        watchText = `${minutes}:${second}`;
+    watchText = `${minutes}:${second}`;
 
-    
     this.watch.innerText = watchText;
   }
   renderingMap() {
     this.renderFlag();
     this.renderCells();
+    this.renderCountMine();
   }
+  renderChoiceGames() {
+    this.gameMapHTML.innerHTML = ""
+    let choice = document.createElement("div");
+    let easy = document.createElement("div");
+    let medium = document.createElement("div");
+    let hard = document.createElement("div");
+    choice.classList.add('choice')
+    easy.classList.add('easy')
+    medium.classList.add('medium')
+    hard.classList.add('hard')
+    easy.innerText="easy"
+    medium.innerText="medium"
+    hard.innerText="hard"
+    hard.id="hard"
+    easy.id="easy"
+    medium.id="medium"
+    choice.appendChild(easy)
+    choice.appendChild(medium)
+    choice.appendChild(hard)
+    this.gameMapHTML.append(choice)
+   
+      }
+
   renderEndGame(endCondition) {
     let endDiv = document.createElement("div");
     endDiv.classList.add("endGame");
@@ -93,6 +123,11 @@ export class MapRendering {
       endCondition == "win" ? "You won the battle!!!" : "You lose, sucker!";
     endDiv.innerText = text;
     this.gameMapHTML.append(endDiv);
+    let removeDiv = () => {
+      endDiv.remove();
+      endDiv.removeEventListener("click", removeDiv);
+    };
+    endDiv.addEventListener("click", removeDiv);
   }
   renderFlag() {
     for (let i = 0; i < this.arrayFlagCells.length; i++) {
