@@ -12,7 +12,7 @@ const btnStart = document.getElementById("btnstartgame");
 const gameMapHTML = document.getElementById("mineMap");
 btnStart.addEventListener("click", init);
 const watch = document.getElementById("stopWatch");
-const countMine=document.getElementById('countMine')
+const countMine = document.getElementById("countMine");
 
 /*function init() {
   if (typeof game !== "undefined") {
@@ -25,27 +25,25 @@ const countMine=document.getElementById('countMine')
   game.start();
 }*/
 
-
 function init() {
-
   if (typeof state !== "undefined") {
     state = null;
   }
- // let state = new GameState({ row: 10, column: 10 }, 10);
-
- state.addSubscribes(render.watchRender);
- state.addSubscribes(render.render);
- 
+  let state = new GameState({ row: 10, column: 10 }, 10);
+  let logic = new Logic();
+  let timer = new Timer();
+  let render = new MapRendering(gameMapHTML, watch, countMine);
   let map = new Map();
+  let mouse = new MouseClick(gameMapHTML);
+ 
 
   map.sendMap = (mapObj) => {
     state.setStateMap(mapObj);
   };
 
-  map.createGameMap(state.getState());
-  console.log(state);
-
-  let render = new MapRendering(gameMapHTML, watch, countMine);
+  timer.onTick = (ms) => {
+    state.setTimerValue(ms);
+  };
 
   render.render = (data) => {
     render.createGameDiv(data);
@@ -54,7 +52,9 @@ function init() {
     render.renderWatch(data);
   };
 
-  let mouse = new MouseClick(gameMapHTML);
+  state.addSubscribes(render.watchRender);
+  state.addSubscribes(render.render);
+  
   mouse.addListenerClick();
 
   mouse.getIndexDiv = (el) => {
@@ -69,7 +69,6 @@ function init() {
   mouse.sendTwoBtn = (index) => {
     logic.checkingTwoBtn(index);
   };
-  let logic = new Logic();
 
   logic.onSendCell = (newArr) => {
     state.setStateLeftClick(newArr);
@@ -111,18 +110,10 @@ function init() {
     mouse.removeListnerClick();
   };
 
-  let timer = new Timer();
-
-  timer.onTick = (ms) => {
-    state.setTimerValue(ms);
-  };
- 
-  
-
-
+  map.createGameMap(state.getState());
+  console.log(state);
  
 
-  
   //render.renderChoiceGames()
   //timer.start()
   // mouse.removeListnerClick()
