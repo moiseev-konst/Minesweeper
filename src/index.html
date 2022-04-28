@@ -1,248 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
     <title>Document</title>
-  </head>
-  <style>
-    body {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-    }
-    .game {
-      display: inline-flex;
-      position: absolute;
-      border-style: solid;
+</head>
 
-      border-color: black;
-      border-radius: 5px;
-      height: 80%;
-      width: 80%;
-      margin: 0, auto;
-      top: 10%;
-      left: 10%;
-    }
-
-    .mineMap {
-      
-      
-      position:relative;
-      width: 50vw;
-      max-width: 700px;
-      height: 50vw;
-      max-height: 700px;
-      justify-content: center;
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      grid-template-rows: repeat(10, 1fr);
-      
-      left: 10%;
-     
-      border-radius: 5px;
-      margin-top: auto;
-      margin-bottom: auto;
-      margin-right: 10px;
-      margin-left: 10px;
-      background-color: rgb(52, 60, 68);
-    }
-    .navBar {
-      height: 80%;
-      width: 20%;
-
-      position: absolute;
-      border-style: solid;
-      border-color: rgb(4, 0, 255);
-      border-radius: 5px;
-      margin-top: auto;
-      margin-bottom: auto;
-      margin-right: 10px;
-      margin-left: 10px;
-      top: 10%;
-      right: 20px;
-    }
-
-    .btnstart {
-      height: 140px;
-      width: 140px;
-      display: block;
-      justify-content: center;
-      margin-left: auto;
-      margin-top: 20px;
-      margin-right: auto;
-      border-radius: 10px;
-    }
-    .easy {
-    
-      background-color: rgb(60, 123, 206);
-      height: 50%;
-      width: 25%;
-      display: block;
-      justify-content: center;
-      margin-left: auto;
-     font-size: 20px; 
-     line-height:12vw;
-      margin-right: auto;
-      border-radius: 10px;
-    }  .medium {
-      background-color: rgb(60, 123, 206);
-      height: 50%;
-      width: 25%;
-      display: block;
-      justify-content: center;
-      margin-left: auto;
-      font-size: 20px; 
-      line-height:12vw;
-      margin-right: auto;
-      border-radius: 10px;
-    }  .hard {
-      background-color: rgb(60, 123, 206);
-      height: 50%;
-      width: 25%;
-      display: block;
-      justify-content: center;
-      margin-left: auto;
-      font-size: 20px; 
-      line-height:12vw;
-      margin-right: auto;
-      border-radius: 10px;
-    }
-    .choice{
-      position: absolute;
-      height: 50%;
-      width: 100%;
-      margin-top: 25%;
-      text-align: center;
-      display: flex;
-        align-items: center;
-        justify-content: center;
-      
-     
-      align-content: center;
-      backdrop-filter: blur(5px);
-      background: rgba(255, 255, 255, 0.705)
-    }
-    .GameElement {
-      display: flex;
-      background-color: rgb(60, 123, 206);
-      
-      border-radius: 5px;
-      color: rgb(0, 0, 0);
-      margin: 1px 1px 1px 1px ;
-      align-items: center;
-      justify-content: center;
-     
-      width: 90%;
-      height: 90%;
-      background-position: center;
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
-    .n1 {
-      background-color: rgb(200, 200, 200);
-      background-image: url(./img/1.png);
-    }
-    .n2 {
-      background-color: rgb(200, 200, 200);
-      background-image: url(./img/2.png);
-    }
-    .n3 {
-      background-color: rgb(200, 200, 200);
-      background-image: url(./img/3.png);
-    }
-    .n4 {
-      background-color: rgb(200, 200, 200);
-      background-image: url(./img/4.png);
-    }
-    .n5 {
-      background-color: rgb(200, 200, 200);
-      background-image: url(./img/5.png);
-    }
-    .n6 {
-      background-color: rgb(200, 200, 200);
-      background-image: url(./img/6.png);
-    }
-    .n7 {
-      background-color: rgb(200, 200, 200);
-      background-image: url(./img/7.png);
-    }
-    .n8 {
-      background-color: rgb(200, 200, 200);
-      background-image: url(./img/8.png);
-    }
-    .n0 {
-      background-color: rgb(200, 200, 200);
-    }
-    .n9 {
-      background-color: rgb(200, 200, 200);
-      background-image: url(./img/explosion.png);
-    }
-    .mine{
-      background-color: rgb(200, 200, 200);
-      background-image: url(./img/mine2.png)
-    }
-    .flag{
-          background-image: url(./img/flag.png);
-          background-color: rgb(255, 175, 55)
-    }
-    .stopWatch{
-      background-color: rgb(60, 123, 206);
-      border: 1px solid black;
-      border-radius: 5px;
-      height: 60px;
-      width: 140px;
-      display: block;
-      justify-content: center;
-      margin-left: auto;
-      margin-top: 20px;
-      margin-right: auto;
-      border-radius: 10px;
-      text-align: center;
-      padding-top: 25px;
-    }
-    .countMine{
-      background-color: rgb(60, 123, 206);
-      border: 1px solid black;
-      border-radius: 5px;
-      height: 60px;
-      width: 140px;
-      display: block;
-      justify-content: center;
-      margin-left: auto;
-      margin-top: 20px;
-      margin-right: auto;
-      border-radius: 10px;
-      text-align: center;
-      padding-top: 25px;
-    }
-    .endGame{
-      position: absolute;
-      height: 50%;
-      width: 100%;
-      margin-top: 25%;
-      text-align: center;
-      display: flex;
-        align-items: center;
-        justify-content: center;
-      font-size: 72px;
-     font-weight: bold;
-      align-content: center;
-      backdrop-filter: blur(5px);
-      background: rgba(255, 255, 255, 0.705)
-    }
-  </style>
-  <body>
+<body>
     <div class="game">
-      <div class="mineMap" id="mineMap">mineMap</div>
-      <div class="navBar">
-        <button class="btnstart" id="btnstartgame">Start</button>
-        <h1 class="stopWatch" id="stopWatch">00:00</h1>
-        <h1 class="countMine" id="countMine"></h1>
-      </div>
+        <div class="navBar">
+            <div class="btnStartChoise">
+                <button type="button" class="btnstart" id="btnstartgame">Start</button>
+                <button type="button" class="btnchoise" id="btnchoise">&#9632 &#9632 &#9632</button>
+            </div>
+
+            <h1 class="stopWatch" id="stopWatch">
+                <p>00:00</p>
+            </h1>
+            <h1 class="countMine" id="countMine">
+                <p>00</p>
+            </h1>
+
+        </div>
+        <div class="mineMap" id="mineMap"></div>
+
     </div>
-    <div src="C:\Users\Kostya\Desktop\mine-minesweeper.jpg"></div>
+
     <script src="index.js"></script>
-  </body>
+</body>
+
 </html>

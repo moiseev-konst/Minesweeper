@@ -1,0 +1,328 @@
+/* Указываем box sizing */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+body {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(52, 60, 68);
+    font-family: 'Gloria Hallelujah', cursive;
+    ;
+}
+
+h1,
+p,
+button {
+    margin: 0px;
+    padding: 0px;
+}
+
+.game {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    border-radius: 20px;
+    background-color: rgb(149, 165, 179);
+    height: 80%;
+    width: 80%;
+    top: 10%;
+    left: 10%;
+}
+
+.mineMap {
+    position: relative;
+    width: 45vw;
+    height: 45vw;
+    max-height: 760px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    grid-template-rows: repeat(16, 1fr);
+    align-items: center;
+    justify-items: center;
+    margin: auto;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(52, 60, 68);
+}
+
+.easy {
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    width: 50vw;
+    max-width: 700px;
+    height: 50vw;
+    max-height: 700px;
+}
+
+.medium {
+    grid-template-columns: repeat(16, 1fr);
+    grid-template-rows: repeat(16, 1fr);
+    width: 50vw;
+    max-width: 700px;
+    height: 50vw;
+    max-height: 700px;
+}
+
+.hard {
+    grid-template-columns: repeat(30, 1fr);
+    grid-template-rows: repeat(16, 1fr);
+    width: 72vw;
+    height: 36vw;
+}
+
+.navBar {
+    display: flex;
+    height: 150px;
+    justify-content: space-between;
+    background-color: rgb(60, 123, 206);
+}
+
+.cell_brightness {
+    filter: brightness(50%);
+}
+
+.btnStartChoise {
+    display: flex;
+    order: 1;
+    width: 300px;
+}
+
+.btnstart {
+    cursor: pointer;
+    display: block;
+    width: 200px;
+    position: relative;
+    justify-content: center;
+    background-color: aliceblue;
+    font-size: 3.5rem;
+    margin: 0;
+    border: none;
+    font-weight: bold;
+    border-right: 3px solid black;
+}
+
+.btnchoise {
+    cursor: pointer;
+    text-orientation: sideways;
+    display: block;
+    width: 100px;
+    justify-content: center;
+    font-size: 1rem;
+    background-color: aliceblue;
+    text-align: center;
+    margin: 0;
+    border: none;
+    border-left: 3px solid black;
+}
+
+.stopWatch {
+    display: flex;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    background-color: aliceblue;
+    text-align: center;
+    order: 0;
+}
+
+.countMine {
+    display: flex;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    background-color: aliceblue;
+    text-align: center;
+    margin: 0;
+    order: 3;
+}
+
+.btneasy {
+    text-transform: uppercase;
+    cursor: pointer;
+    height: 150px;
+    width: 27%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    background-color: aliceblue;
+    border-radius: 15px;
+    box-shadow: 5px 6px 6px 6px rgba(34, 60, 80, 0.2);
+    padding: 15px;
+    margin: 15px;
+}
+
+.btnmedium {
+    text-transform: uppercase;
+    cursor: pointer;
+    height: 150px;
+    width: 27%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    background-color: aliceblue;
+    border-radius: 15px;
+    box-shadow: 5px 6px 6px 6px rgba(34, 60, 80, 0.2);
+    padding: 15px;
+    margin: 15px;
+}
+
+.btnhard {
+    text-transform: uppercase;
+    cursor: pointer;
+    height: 150px;
+    width: 27%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    background-color: aliceblue;
+    border-radius: 15px;
+    box-shadow: 5px 6px 6px 6px rgba(34, 60, 80, 0.2);
+    padding: 15px;
+    margin: 15px;
+}
+
+.choice {
+    position: absolute;
+    height: 50%;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 72px;
+    font-weight: bold;
+    align-content: center;
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.705)
+}
+
+.GameElement {
+    display: flex;
+    background-color: rgb(60, 123, 206);
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
+    margin: 1px 1px 1px 1px;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: 90%;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.n1 {
+    background-color: rgb(200, 200, 200);
+    background-image: url(/img/1.png);
+}
+
+.n2 {
+    background-color: rgb(200, 200, 200);
+    background-image: url(/img/2.png);
+}
+
+.n3 {
+    background-color: rgb(200, 200, 200);
+    background-image: url(/img/3.png);
+}
+
+.n4 {
+    background-color: rgb(200, 200, 200);
+    background-image: url(/img/4.png);
+}
+
+.n5 {
+    background-color: rgb(200, 200, 200);
+    background-image: url(/img/5.png);
+}
+
+.n6 {
+    background-color: rgb(200, 200, 200);
+    background-image: url(/img/6.png);
+}
+
+.n7 {
+    background-color: rgb(200, 200, 200);
+    background-image: url(/img/7.png);
+}
+
+.n8 {
+    background-color: rgb(200, 200, 200);
+    background-image: url(/img/8.png);
+}
+
+.n0 {
+    background-color: rgb(200, 200, 200);
+}
+
+.n9 {
+    background-color: rgb(200, 200, 200);
+    background-image: url(/img/explosion.png);
+}
+
+.mine {
+    background-color: rgb(200, 200, 200);
+    background-image: url(/img/mine2.png)
+}
+
+.flag {
+    background-image: url(/img/flag.png);
+    background-color: rgb(255, 175, 55)
+}
+
+.endGame {
+    position: absolute;
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 72px;
+    font-weight: bold;
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.705)
+}
