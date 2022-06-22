@@ -4,6 +4,8 @@ import { MapRendering } from "./mapRendering.js";
 import { MouseClick } from "./mouseClick.js";
 import { Logic } from "./gameLogic.js";
 import { Timer } from "./timer.js";
+import css from "./index.css"
+
 
 let state, logic, timer, render, map, mouse;
 const btnStart = document.getElementById("btnstartgame");
