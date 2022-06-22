@@ -39,6 +39,7 @@ function chooseHard() {
 }
 
 function newGame() {
+    mouse.addListenerClick()
     state.setNewGame()
 }
 
