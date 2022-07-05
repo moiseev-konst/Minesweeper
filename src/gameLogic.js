@@ -69,6 +69,7 @@ export class Logic {
             }
 
             this.onSendFirst(this.firstClick, this.arrayOpenCells);
+            this.onSendSelectGame(true)
         } else if (
             this.arrayFlagCells.indexOf(index) < 0 &&
             this.arrayOpenCells.indexOf(index) < 0
@@ -128,23 +129,26 @@ export class Logic {
         }
     }
     youWin() {
-        if (
-            this.gameMine.every((mine) => {
-                return (
-                    this.arrayFlagCells.indexOf(mine) >= 0 &&
-                    this.arrayFlagCells.length == this.gameMine.length
-                );
-            })
-        ) {
-            let allMap = [];
-            for (let i = 0; i < this.gameMap.length; i++) {
-                allMap.push(i);
+        if (this.firstClick) {
+            if (
+                this.gameMine.every((mine) => {
+                    return (
+                        this.arrayFlagCells.indexOf(mine) >= 0 &&
+                        this.arrayFlagCells.length == this.gameMine.length
+                    );
+                })
+            ) {
+                let allMap = [];
+                for (let i = 0; i < this.gameMap.length; i++) {
+                    allMap.push(i);
+                }
+                this.arrayOpenCells = allMap;
+                this.onStopWatch();
+                this.onStopClick();
+                this.onSendEndGame("win", this.arrayOpenCells);
             }
-            this.arrayOpenCells = allMap;
-            this.onStopWatch();
-            this.onStopClick();
-            this.onSendEndGame("win", this.arrayOpenCells);
         }
+
     }
     youLose(index) {
         this.onStopWatch();
